@@ -15,4 +15,4 @@ std::string replace_macros(
 std::string remove_define_lines(const std::string& input);
 
 
-std::string proprocess(const std::string& input);
+std::string preprocess(const std::string& input);

@@ -70,7 +70,7 @@ std::string remove_define_lines(const std::string& input)
 
 
 // function to preprocess the macros in the input string
-std::string proprocess(const std::string& input)
+std::string preprocess(const std::string& input)
 {
 	std::string output = input;
 

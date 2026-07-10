@@ -2,4 +2,12 @@ r:
 	TASK build
 
 run:
-	RUNWIN ./out/build/x64-Debug/	
+	RUNWIN ./out/build/x64-Debug/
+
+build:
+  RUN cmake -S . -B build
+  RUN cmake --build build
+
+b:
+  TASK build
+
