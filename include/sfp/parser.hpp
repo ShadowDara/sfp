@@ -3,12 +3,20 @@
 #include <string>
 #include <cctype>
 #include <optional>
+#include <vector>
+#include <sstream>
 
 #include "ast.hpp"
 #include "config.hpp"
+#include "preprocessor.hpp"
 
 
+// trim spaces
 std::string trim(const std::string& s);
+
+
+// Split by input by whitespace
+std::vector<std::string> split_whitespace(const std::string& input);
 
 
 // Function to parse a single line of input into a Command object
