@@ -1,9 +1,14 @@
 #pragma once
 
+#include <string>
+#include <cctype>
 #include <optional>
 
 #include "ast.hpp"
 #include "config.hpp"
+
+
+std::string trim(const std::string& s);
 
 
 // Function to parse a single line of input into a Command object

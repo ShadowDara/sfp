@@ -17,7 +17,7 @@ struct Run {
 	std::string name;
 };
 
-struct Task {
+struct ExecuteTask {
 	std::string name;
 };
 
@@ -91,7 +91,7 @@ using Command = std::variant<
 	Cd,
 	Env,
 	Run,
-	Task,
+	ExecuteTask,
 	Rm,
 	Mkdir,
 	Cp,

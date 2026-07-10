@@ -23,12 +23,12 @@ set_property(TARGET samfileparserlib PROPERTY CXX_STANDARD 20)
 
 
 # Fügen Sie der ausführbaren Datei dieses Projekts eine Quelle hinzu.
-add_executable (samfileparser++ "main.cpp")
+add_executable (sfp "${CMAKE_CURRENT_SOURCE_DIR}/src/exe/main.cpp")
 
-target_link_libraries(samfileparser++ samfileparserlib)
+target_link_libraries(sfp samfileparserlib)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET samfileparser++ PROPERTY CXX_STANDARD 20)
+  set_property(TARGET sfp PROPERTY CXX_STANDARD 20)
 endif()
 
 # TODO: Fügen Sie bei Bedarf Tests hinzu, und installieren Sie Ziele.

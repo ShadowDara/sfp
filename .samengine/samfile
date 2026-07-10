@@ -1,0 +1,5 @@
+r:
+	TASK build
+
+run:
+	RUNWIN ./out/build/x64-Debug/	
