@@ -1,5 +1,7 @@
 #include <sfp/samfileparser++.hpp>
 
+//#include <string>
+
 int main(int argc, char* argv[]) {
 	/*if (argc < 2) {
 		std::cerr << "Usage: " << argv[0] << " <input.sam>" << std::endl;
