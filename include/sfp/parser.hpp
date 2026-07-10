@@ -5,18 +5,18 @@
 #include <optional>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
+#include <iostream>
+#include <string_view>
+
 
 #include "ast.hpp"
 #include "config.hpp"
 #include "preprocessor.hpp"
+#include "string_utils.hpp"
 
 
-// trim spaces
-std::string trim(const std::string& s);
-
-
-// Split by input by whitespace
-std::vector<std::string> split_whitespace(const std::string& input);
+CommandType parse_command(std::string_view s);
 
 
 // Function to parse a single line of input into a Command object
@@ -28,4 +28,4 @@ TaskHeader parse_task_header(const std::string& line);
 
 
 // Function to parse the complete file
-Tasks parse(const std::string& input, const Config& config);
+Tasks parse(std::string content, const Config& conf);

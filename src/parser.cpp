@@ -1,52 +1,182 @@
 #include <sfp/parser.hpp>
 
 
-std::string trim(const std::string& s)
+CommandType parse_command(std::string_view s)
 {
-    size_t start = 0;
-    size_t end = s.size();
+    if (s == "cd") return CommandType::Cd;
+    if (s == "env") return CommandType::Env;
+    if (s == "run") return CommandType::Run;
+    if (s == "task") return CommandType::ExecuteTask;
+    if (s == "rm") return CommandType::Rm;
+    if (s == "mkdir") return CommandType::Mkdir;
+    if (s == "cp") return CommandType::Cp;
+    if (s == "mv") return CommandType::Mv;
+	if (s == "sleep") return CommandType::Sleep;
+	if (s == "shell") return CommandType::Shell;
+	if (s == "echo") return CommandType::Echo;
+	if (s == "warn") return CommandType::Warn;
+	if (s == "error") return CommandType::Error;
+	if (s == "touch") return CommandType::Touch;
+	if (s == "write") return CommandType::Write;
+	if (s == "append") return CommandType::Append;
+	if (s == "unsetenv") return CommandType::UnsetEnv;
+	if (s == "prompt") return CommandType::Prompt;
 
-    while (start < end && std::isspace(static_cast<unsigned char>(s[start])))
-        start++;
-
-    while (end > start && std::isspace(static_cast<unsigned char>(s[end - 1])))
-        end--;
-
-    return s.substr(start, end - start);
-}
-
-
-std::vector<std::string> split_whitespace(const std::string& input)
-{
-    std::vector<std::string> result;
-    std::istringstream iss(input);
-
-    std::string word;
-    while (iss >> word) {
-        result.push_back(word);
-    }
-
-    return result;
+    return CommandType::ErrorType;
 }
 
 
 // Function to parse a single line of input into a Command object
-std::optional<Command> parse_line(const std::string& line, const Config& config, std::size_t idx)
+std::optional<Command> parse_line(
+    const std::string& line,
+    const Config& config,
+    std::size_t idx)
 {
+	auto args = split_whitespace(line);
+
+    switch (parse_command(args[1]))
+    {
+        case CommandType::Cd:
+        {
+            if (args.size() != 2)
+            { 
+                throw std::runtime_error(
+                    "Invalid CD command at line " + std::to_string(idx)
+                );
+            }
+		    return Cd{ args[1] };
+        }
+    }
 }
 
 
 // Function to parse the Task Header
 TaskHeader parse_task_header(const std::string& line)
 {
+	// Search for the colon in the line
+    size_t colon_pos = line.find(':');
+    if (colon_pos == std::string::npos)
+    {
+        throw std::runtime_error(
+            "Invalid task header: missing ':' in line: " + line
+        );
+    }
+
+    // Extract the task name and dependencies
+    std::string name = trim(line.substr(0, colon_pos));
+    std::string deps_str = trim(line.substr(colon_pos + 1));
+    
+    // Split dependencies by whitespace
+    std::vector<std::string> dependencies = split_whitespace(deps_str);
+	return TaskHeader{ name, dependencies };
 }
+
 
 // Function to parse the complete file
-Tasks parse(const std::string& input, const Config& config)
+Tasks parse(std::string content, const Config& conf)
 {
-	// add preprocessing step here if needed
-    auto content = preprocess(input);
+    content = preprocess(content);
 
-    
+    Tasks tasks;
+    std::optional<std::string> current;
+
+    std::istringstream stream{ std::string(content) };
+    std::string line;
+
+    size_t idx = 0;
+
+    while (std::getline(stream, line))
+    {
+        idx++;
+        size_t line_no = idx;
+
+        // trim_end()
+        while (!line.empty() &&
+            std::isspace(static_cast<unsigned char>(line.back())))
+        {
+            line.pop_back();
+        }
+
+        auto trimmed = trim_view(line);
+
+        // ignore empty lines
+        if (trimmed.empty())
+            continue;
+
+        // ignore comments
+        if (trimmed.starts_with('#') ||
+            trimmed.starts_with("//") ||
+            trimmed.starts_with("--"))
+        {
+            continue;
+        }
+
+        // task header
+        //
+		// Search for a colon in the line and check
+        // if the first character is not whitespace
+        if (!line.empty() &&
+            !std::isspace(static_cast<unsigned char>(line[0])) &&
+            line.find(':') != std::string::npos)
+        {
+            auto [name, deps] = parse_task_header(line);
+
+            if (tasks.contains(name))
+            {
+                throw std::runtime_error(
+                    "Duplicate task '" + name + "'"
+                );
+            }
+
+            tasks.emplace(
+                name,
+                Task{
+                    .dependencies = deps,
+                    .commands = {}
+                }
+            );
+
+            current = name;
+        }
+
+        // command
+        else if (!line.empty() &&
+            std::isspace(static_cast<unsigned char>(line[0])))
+        {
+            if (current.has_value())
+            {
+                auto cmd = parse_line(line, conf, idx);
+
+                if (cmd.has_value())
+                {
+                    auto& task = tasks.at(*current);
+
+                    task.commands.push_back(
+                        CommandWithMeta{
+                            .command = *cmd,
+                            .line_number = line_no,
+                            .original_line = line
+                        }
+                    );
+                }
+                else
+                {
+                    std::cerr
+                        << "warning: ignored invalid line: "
+                        << line
+                        << "\n";
+                }
+            }
+        }
+
+        else
+        {
+            std::cerr
+                << "warning: line outside of task: "
+                << line
+                << "\n";
+        }
+    }
+
+    return tasks;
 }
-

@@ -3,6 +3,29 @@
 #include <string>
 #include <variant>
 
+enum class CommandType
+{
+	Cd,
+	Env,
+	Run,
+	ExecuteTask,
+	Rm,
+	Mkdir,
+	Cp,
+	Mv,
+	Sleep,
+	Shell,
+	Echo,
+	Warn,
+	Error,
+	Touch,
+	Write,
+	Append,
+	UnsetEnv,
+	Prompt,
+	ErrorType
+};
+
 
 struct Cd {
 	std::string path;

@@ -4,6 +4,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "ast.hpp"
+
 
 struct Config {};
 
@@ -24,3 +26,10 @@ struct Task {
 };
 
 using Tasks = std::unordered_map<std::string, Task>;
+
+
+struct RuntimeState {
+	std::string path;
+
+	std::unordered_map<std::string, std::string> env_vars;
+};

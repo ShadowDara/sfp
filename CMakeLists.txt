@@ -18,7 +18,11 @@ target_sources(samfileparserlib PRIVATE
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/samfileparser++.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/parser.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/preprocessor.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/string_utils.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/runner.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/error.cpp"
 )
+
 set_property(TARGET samfileparserlib PROPERTY CXX_STANDARD 20)
 
 
