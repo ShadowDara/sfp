@@ -23,6 +23,11 @@ enum class CommandType
 	Append,
 	UnsetEnv,
 	Prompt,
+
+	Win,
+	Lin,
+	Mac,
+
 	ErrorType
 };
 

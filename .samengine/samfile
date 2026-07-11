@@ -11,3 +11,5 @@ build:
 b:
   TASK build
 
+g:
+  RUN python build.py

@@ -21,6 +21,9 @@ CommandType parse_command(std::string_view s)
 	if (s == "append") return CommandType::Append;
 	if (s == "unsetenv") return CommandType::UnsetEnv;
 	if (s == "prompt") return CommandType::Prompt;
+	if (s == "win") return CommandType::Win;
+	if (s == "lin") return CommandType::Lin;
+	if (s == "mac") return CommandType::Mac;
 
     return CommandType::ErrorType;
 }
