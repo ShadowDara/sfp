@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <filesystem>
 
 #include "ast.hpp"
 
@@ -29,7 +30,7 @@ using Tasks = std::unordered_map<std::string, Task>;
 
 
 struct RuntimeState {
-	std::string path;
+	std::filesystem::path path;
 
 	std::unordered_map<std::string, std::string> env_vars;
 };

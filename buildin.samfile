@@ -105,3 +105,16 @@ _build_in_docs:
 _build_in_docs:
     RUN wget https://raw.githubusercontent.com/shadowdara/docs/refs/heads/main/docs/index.html
     ECHO pulled the Docs from Github with wget
+
+
+# Init
+# a Task to create a new samfile
+#
+# seg _build_in_init
+_build_in_init:
+    TOUCH samfile
+    APPEND samfile "# This is a new samfile"
+    APPEND samfile "#"
+    APPEND samfile "# Visit the Link to gain more Infos about samfiles"
+    APPEND samfile "# https://shadowdara.github.io/docs/#/samfile"
+    APPEND samfile "#"

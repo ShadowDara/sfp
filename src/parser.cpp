@@ -39,6 +39,7 @@ std::optional<Command> parse_line(
 
     switch (parse_command(args[1]))
     {
+        // CD
         case CommandType::Cd:
         {
             if (args.size() != 2)
@@ -49,6 +50,21 @@ std::optional<Command> parse_line(
             }
 		    return Cd{ args[1] };
         }
+
+        case CommandType::Run:
+        {
+            std::string command;
+            
+            for (size_t i = 1; i < args.size(); i++)
+            {
+                command += args[i];
+                command += " ";
+            }
+
+            return Run{ command };
+        }
+
+        // Others add here
     }
 }
 

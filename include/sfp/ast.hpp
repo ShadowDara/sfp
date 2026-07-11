@@ -67,7 +67,7 @@ struct Mv {
 	std::string destination;
 };
 
-struct Sleep {
+struct SleepTask {
 	int seconds;
 };
 
@@ -124,7 +124,7 @@ using Command = std::variant<
 	Mkdir,
 	Cp,
 	Mv,
-	Sleep,
+	SleepTask,
 	Shell,
 	Echo,
 	Warn,

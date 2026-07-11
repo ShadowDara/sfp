@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include "colors.hpp"
 #include "config.hpp"
@@ -18,6 +19,20 @@
 #include "generated.hpp"
 #include "parser.hpp"
 #include "preprocessor.hpp"
+
+#ifdef _WIN32
+	#include <windows.h>
+#else
+	#include <unistd.h>
+	#include <sys/wait.h>
+#endif
+
+
+// Function to run a command
+void runCommand(
+	const std::string& command,
+	const RuntimeState& state
+);
 
 
 // function to run a task by name, with a set of visited tasks to avoid cycles
