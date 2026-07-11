@@ -120,24 +120,36 @@ int run_samfile(std::string_view command, const Config& conf)
 		.env_vars = {}        
 	};
 
+	std::string content2 = "";
+
 	std::ifstream file(".samengine/samfile");
 
 	if (!file)
 	{
-		std::cerr << "Error while reading samfile\n";
-		return 1;
+		std::cerr << RED <<"Error while reading samfile" << END << "\n";
+		
+		// Do not exit here, because users should still be able
+		// to run buildin tasks with out a samfile
+		//return 1;
+
+		// Set the buildin samfile into the content
+		content2 = buildin_samfile_content;
 	}
 
-	std::stringstream buffer;
-	buffer << file.rdbuf();
+	// When file was able to read
+	else
+	{
+		std::stringstream buffer;
+		buffer << file.rdbuf();
 
-	std::string content = buffer.str();
+		std::string content = buffer.str();
 
-	// combine built-in + file
-	std::string content2 =
-		buildin_samfile_content +
-		"\n\n" +
-		content;
+		// combine built-in + file
+		content2 =
+			buildin_samfile_content +
+			"\n\n" +
+			content;
+	}
 
 	Tasks tasks = parse(content2, conf);
 

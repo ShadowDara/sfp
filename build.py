@@ -1,6 +1,21 @@
-# python file for the buildin samfile
+# python file for the builtin samfile
 
-with open("include/sfp/generated.hpp", "w", encoding="utf-8") as f:
+input_path = "buildin.samfile"
+output_path = "include/sfp/generated.hpp"
+
+with open(input_path, "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+# remove comments starting with # and empty lines
+filtered_lines = [
+    line.rstrip()
+    for line in lines
+    if not line.lstrip().startswith("#") and line.strip()
+]
+
+filtered = "\n".join(filtered_lines)
+
+with open(output_path, "w", encoding="utf-8") as f:
     f.write("""// THIS FILE IS AUTO GENERATED!
 // DO NOT EDIT IT!!!
 
@@ -9,6 +24,8 @@ with open("include/sfp/generated.hpp", "w", encoding="utf-8") as f:
 inline std::string buildin_samfile_content = R"(
 """)
 
-    with open("buildin.samfile", "r", encoding="utf-8") as f2:
-        f.write(f2.read())
-    f.write(")\";\n")
+    f.write(filtered)
+
+    f.write("""
+)";
+""")

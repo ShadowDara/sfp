@@ -96,3 +96,12 @@ _build_in_docs:
     RUN curl https://raw.githubusercontent.com/shadowdara/docs/refs/heads/main/docs/index.html
     ECHO pulled the Docs from Github with curl
 
+
+# Docs
+# a Task to pull the docs by Shadowdara for Shadowdara's projects from Github
+# with wget.
+#
+# seg _build_in_docs
+_build_in_docs:
+    RUN wget https://raw.githubusercontent.com/shadowdara/docs/refs/heads/main/docs/index.html
+    ECHO pulled the Docs from Github with wget

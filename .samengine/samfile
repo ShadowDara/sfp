@@ -1,6 +1,7 @@
 r:
 	TASK build
 
+
 run:
 	RUNWIN ./out/build/x64-Debug/
 
@@ -8,8 +9,12 @@ build:
   RUN cmake -S . -B build
   RUN cmake --build build
 
+
+# Run build Task
 b:
   TASK build
 
+
+# Generated the buildin samfile
 g:
   RUN python build.py
