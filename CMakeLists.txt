@@ -16,21 +16,26 @@ project ("samfileparser++")
 
 add_library(samfileparserlib)
 
+
+# credit to
+#https://github.com/meemknight/raylibCmakeSetup
+
+# MY_SOURCES is defined to be a list of all the source files for my game 
+# DON'T ADD THE SOURCES BY HAND, they are already added with this macro
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+
+
+# include dir
 target_include_directories(samfileparserlib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 target_sources(samfileparserlib PRIVATE
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/samfileparser++.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/parser.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/preprocessor.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/string_utils.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/runner.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/error.cpp"
+	${MY_SOURCES}
 )
 
 set_property(TARGET samfileparserlib PROPERTY CXX_STANDARD 20)
 
 
 # Fügen Sie der ausführbaren Datei dieses Projekts eine Quelle hinzu.
-add_executable (sfp "${CMAKE_CURRENT_SOURCE_DIR}/src/exe/main.cpp")
+add_executable(sfp "${CMAKE_CURRENT_SOURCE_DIR}/src/exe/main.cpp")
 
 target_link_libraries(sfp samfileparserlib)
 

@@ -118,3 +118,12 @@ _build_in_init:
     APPEND samfile "# Visit the Link to gain more Infos about samfiles"
     APPEND samfile "# https://shadowdara.github.io/docs/#/samfile"
     APPEND samfile "#"
+
+
+# Add samfile language
+# a Task to add the samfile as Shell lang to the gitignore file
+#
+# seg _build_in_samfile_lang
+_build_in_samfile_lang:
+    APPEND .gitattributes "# mark samfile as shell"
+    APPEND .gitattributes "samfile linguist-language=Shell"
