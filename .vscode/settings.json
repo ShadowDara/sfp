@@ -1,0 +1,15 @@
+{
+    "editor.formatOnSave": true,
+    "C_Cpp.formatting": "disabled",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed"
+    ],
+
+    "cmake.generator": "Ninja",
+
+    "files.associations": {
+        "*.hpp": "cpp"
+    }
+}

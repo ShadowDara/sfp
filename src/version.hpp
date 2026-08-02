@@ -1,0 +1,5 @@
+#pragma once
+
+#define BUILD_VERSION "v0.3.2"
+#define BUILD_COMMIT "ff118e2f3356f9a7368a9c0355385e8c85416fd2"
+#define BUILD_DATE "2026-08-02"

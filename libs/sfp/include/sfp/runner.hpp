@@ -23,6 +23,7 @@
     #define NOMINMAX
     #include <windows.h>
 #else
+    #include <cerrno>
     #include <cstring>
     #include <sys/wait.h>
     #include <unistd.h>

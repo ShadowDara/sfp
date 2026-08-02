@@ -1,3 +1,12 @@
 /.vs
 /out
-build
+/build
+/compile_commands.json
+NOTICE.md
+NOTICE.md.html
+/release
+
+
+/package.json
+/bun.lock
+/node_modules

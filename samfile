@@ -5,10 +5,11 @@ r:
 run:
 	RUNWIN ./out/build/x64-Debug/
 
+# Build the it with CMake
 build:
-  RUN cmake -S . -B build
-  RUN cmake --build build
-
+    RUN cmake -S . -B build
+    RUN ln -sf build/compile_commands.json compile_commands.json
+    RUN cmake --build build
 
 # Run build Task
 b:
@@ -18,3 +19,10 @@ b:
 # Generated the buildin samfile
 g:
   RUN python build.py
+
+# Generate Notice
+gen:
+  MKDIR release
+  RUN ./build/sfp -pm NOTICE.iml NOTICE.md
+  RUN bunx sam-cli markdown NOTICE.md
+  MV NOTICE.md.html release/sfp-notice.html

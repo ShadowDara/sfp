@@ -1,20 +1,21 @@
 // Entry Point for the SAMFILE Parser
 
-#include <iostream>
-#include <sfp/runner.hpp>
-#include <macroparser/macroparser.hpp>
-#include <kvp/kvp2.hpp>
+#include "settings.hpp"
+#include "version.hpp"
 #include <batch2.hpp>
 #include <cassert>
-#include <unordered_map>
+#include <iostream>
+#include <kvp/kvp2.hpp>
+#include <macroparser/macroparser.hpp>
+#include <ostream>
+#include <sfp/runner.hpp>
 #include <strutil.hpp>
-
+#include <unordered_map>
 
 using MAP = std::unordered_map<std::string, std::string>;
 using KVPMAP = KeyValueParser2::KeyValueStore<MAP>;
 
-
-enum class SECTION
+enum class SECTION : std::uint8_t
 {
     NONE,
     SAMFILE,
@@ -24,13 +25,19 @@ enum class SECTION
     DATA_JSON
 };
 
-
 int help()
 {
-    std::cout << "Usage: sfp [task]\n";
+    std::cout << "Usage: sfp [task]\n"
+                 "Run with --help for more infos";
     return 0;
 }
 
+int fullhelp()
+{
+    std::cout << "Help for sfp Version " BUILD_VERSION " at " BUILD_DATE
+                 ". Commit: " BUILD_COMMIT "\n";
+    return 0;
+}
 
 std::string loadsamfile()
 {
@@ -45,10 +52,10 @@ std::string loadsamfile()
     return buffer.str();
 }
 
-
 // Function to run a samfile by name, with a set of visited tasks to avoid
 // cycles
-int run_samfile(std::string_view command, const Config &conf, const std::string &content)
+int run_samfile(std::string_view command, const Config &conf,
+                const std::string &content)
 {
     RuntimeState state{.path = std::filesystem::current_path().string(),
                        .env_vars = {}};
@@ -72,8 +79,8 @@ int run_samfile(std::string_view command, const Config &conf, const std::string 
     return 0;
 }
 
-
-int run_samfile2(const std::string &content, const Config &conf, const std::string &cmd)
+int run_samfile2(const std::string &content, const Config &conf,
+                 const std::string &cmd)
 {
     RuntimeState state{.path = std::filesystem::current_path().string(),
                        .env_vars = {}};
@@ -90,12 +97,11 @@ int run_samfile2(const std::string &content, const Config &conf, const std::stri
     return run_task(tasks, cmd, visited, state, conf);
 }
 
-
 int main(int argc, char *argv[])
 {
 #pragma region DEBUG TESTS
 
-#ifndef NDEBUG
+#ifndef NNDEBUG
     // RUN Tests
 
     std::string test_samfile_content = R"(
@@ -278,6 +284,7 @@ echo DOne
     std::string arg1 = (argc > 1) ? argv[1] : "";
 
     // Check for bat2 to execute them
+    // When the first arg ends with .bat2
     if (strutil::ends_with(arg1, ".bat2"))
     {
         std::ifstream file(arg1);
@@ -292,6 +299,56 @@ echo DOne
         auto tokens = batch2::tokenize(content);
         batch2::Interpreter2 interp;
         return interp.execute(tokens);
+    }
+
+    // Check for macroparsing
+    // pm -> parse macros
+    if (arg1 == "-pm")
+    {
+        if (argc >= 4)
+        {
+            std::ifstream file(argv[2]);
+            if (!file)
+            {
+                std::cerr << RED << "Error while opening file" << END << "\n";
+                return 1;
+            }
+            std::stringstream buffer;
+            buffer << file.rdbuf();
+            std::string con = buffer.str();
+
+            MacroParser parser;
+            con = parser.parse_macros(con);
+
+            std::ofstream outfile(argv[3]);
+            if (!outfile)
+            {
+                std::cerr << RED << "Error while opening outfile" << END
+                          << "\n";
+                return 1;
+            }
+
+            outfile << con;
+
+            return 0;
+        }
+
+        std::cout << RED << "Missing file name after parse macros" << END
+                  << "\n";
+        return 1;
+    }
+
+    // Print version
+    if (arg1 == "--version" || arg1 == "-v")
+    {
+        std::cout << BUILD_VERSION "\n";
+        return 0;
+    }
+
+    // Help
+    if (arg1 == "--help" || arg1 == "-h")
+    {
+        return fullhelp();
     }
 
     MacroParser parser;
@@ -323,7 +380,7 @@ echo DOne
     }
 
     // Samfile Version 2 Interpreter
-    else if (version == 2)
+    if (version == 2)
     {
         if (argc < 2)
         {
@@ -343,11 +400,7 @@ echo DOne
         return run_samfile2(parser.parse_macros(content), {}, argv[1]);
     }
 
-    else
-    {
-        std::cerr << RED << "Wrong samfile Version selected: " << version << END << "\n";
-        return 1;
-    }
-
-    return 0;
+    std::cerr << RED << "Wrong samfile Version selected: " << version << END
+              << "\n";
+    return 1;
 }

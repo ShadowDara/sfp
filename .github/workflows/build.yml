@@ -38,7 +38,7 @@ jobs:
       - name: Package
         shell: bash
         run: |
-          mkdir release
+          ./build/${{ matrix.exe }} gen || ./build/Release/${{ matrix.exe }} gen
           cp build/${{ matrix.exe }} release/ || cp build/Release/${{ matrix.exe }} release/
           cd release
           if [[ "${{ runner.os }}" == "Windows" ]]; then

@@ -16,11 +16,43 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE) #link time optimization
 
 
+# for clang d
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
+if(MSVC)
+  add_compile_options(/arch:AVX2) #make sure SIMD optimizations take place
+endif()
+
+
 project(sfp)
+
+set(VERSION_HEADER ${CMAKE_BINARY_DIR}/src/version.hpp)
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/src/version.hpp
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/generate_version_header.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS ${CMAKE_SOURCE_DIR}/generate_version_header.py
+)
+
+add_custom_target(
+    generate_version_header
+    DEPENDS ${CMAKE_BINARY_DIR}/src/version.hpp
+)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-add_executable("${CMAKE_PROJECT_NAME}" "src/sfpmain.cpp" "src/sfp.rc")
+
+add_executable("${CMAKE_PROJECT_NAME}" "src/sfpmain.cpp" "src/sfp.rc" ${VERSION_HEADER})
+
+
+add_dependencies(
+    "${CMAKE_PROJECT_NAME}"
+    generate_version_header
+)
 
 add_subdirectory(libs/sfp)
 add_subdirectory(thirdparty/fling)
@@ -35,5 +67,3 @@ target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
     batch2lib
     kvp
 )
-
-# TODO: Fügen Sie bei Bedarf Tests hinzu, und installieren Sie Ziele.

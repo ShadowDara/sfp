@@ -1,11 +1,10 @@
+#include <fstream>
 #include <macroparser/macroparser.hpp>
 
 // #define D(msg) std::cout << msg << "\n";
 #define D(msg) //
 
-
 using namespace MacroParserUtils;
-
 
 int MacroParser::evaluateIf(const std::string &expr)
 {
@@ -1301,30 +1300,46 @@ std::string MacroParser::parse_macros(const std::string &input)
         {
             if (isActive())
             {
-                pos += 8;
+                pos += 8; // hinter "#include"
+
                 while (pos < line.size() &&
                        std::isspace(static_cast<unsigned char>(line[pos])))
                 {
                     pos++;
                 }
-                std::string filename = StringUtils::read_word(line, pos);
-                // Datei einlesen und rekursiv parsen
+
+                std::string filename;
+
+                if (pos < line.size() && line[pos] == '"')
+                {
+                    pos++; // erstes "
+
+                    while (pos < line.size() && line[pos] != '"')
+                    {
+                        filename += line[pos++];
+                    }
+
+                    if (pos < line.size() && line[pos] == '"')
+                    {
+                        pos++; // schließendes "
+                    }
+                }
+                else
+                {
+                    filename = StringUtils::read_word(line, pos);
+                }
+
+                // add file
                 std::ifstream file(filename);
+
                 if (file)
                 {
                     std::stringstream buffer;
                     buffer << file.rdbuf();
-                    std::string includedText = buffer.str();
-                    std::string expandedIncluded =
-                        parse_macros(includedText);
-                    if (!output.empty())
-                    {
-                        output += "\n";
-                    }
-                    output += expandedIncluded;
+
+                    line = buffer.str();
                 }
             }
-            continue;
         }
 
         if (isActive())
@@ -1346,17 +1361,14 @@ std::string MacroParser::parse_macros(const std::string &input)
     return output;
 }
 
-void MacroParser::add_macro(const std::string& name, const Macro& macro)
+void MacroParser::add_macro(const std::string &name, const Macro &macro)
 {
     macros[name] = macro;
 }
 
-void MacroParser::remove_macro(const std::string& name)
-{
-    macros.erase(name);
-}
+void MacroParser::remove_macro(const std::string &name) { macros.erase(name); }
 
-bool MacroParser::contains_macro(const std::string& name)
+bool MacroParser::contains_macro(const std::string &name)
 {
     return macros.contains(name);
 }
