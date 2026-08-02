@@ -1,29 +1,36 @@
 r:
-	TASK build
+    TASK build
 
 
 run:
-	RUNWIN ./out/build/x64-Debug/
+    RUNWIN ./out/build/x64-Debug/
 
 # Build the it with CMake
 build:
-    RUN cmake -S . -B build
+    RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
     RUN ln -sf build/compile_commands.json compile_commands.json
     RUN cmake --build build
 
+debug:
+    RUN cmake -B build-debug -DCMAKE_BUILD_TYPE=Debug
+    RUN cmake --build build-debug -j
+
 # Run build Task
 b:
-  TASK build
+    TASK build
 
 
 # Generated the buildin samfile
 g:
-  RUN python build.py
+    RUN python build.py
 
 # Generate Notice
 gen:
-  MKDIR release
-  RUN ./build/sfp -pm NOTICE.iml NOTICE.md
-  RUN npm i
-  RUN npx sam-cli markdown NOTICE.md
-  MV NOTICE.md.html release/sfp-notice.html
+    MKDIR release
+    RUN ./build/sfp -pm NOTICE.iml NOTICE.md
+    RUN npm i
+    RUN npx sam-cli markdown NOTICE.md
+    MV NOTICE.md.html release/sfp-notice.html
+
+test:
+    RUN echo hello

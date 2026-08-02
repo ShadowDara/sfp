@@ -2,15 +2,15 @@
 
 CommandType parse_command(std::string_view s)
 {
-    if (s == "cd")
+    if (s == "CD")
     {
         return CommandType::Cd;
     }
-    if (s == "env")
+    if (s == "ENV")
     {
         return CommandType::Env;
     }
-    if (s == "run")
+    if (s == "RUN")
     {
         return CommandType::Run;
     }
@@ -100,7 +100,12 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
                                 .line_number = idx,
                                 .original_line = line};
 
-    switch (parse_command(args[1]))
+    if (args.empty())
+    {
+        return std::nullopt;
+    }
+
+    switch (parse_command(args[0]))
     {
     // CD
     case CommandType::Cd:
@@ -344,6 +349,8 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
     case CommandType::ErrorType:
         break;
     }
+
+    return std::nullopt;
 }
 
 // Function to parse the Task Header

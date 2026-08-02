@@ -28,7 +28,7 @@ enum class SECTION : std::uint8_t
 int help()
 {
     std::cout << "Usage: sfp [task]\n"
-                 "Run with --help for more infos";
+                 "Run with --help for more infos\n";
     return 0;
 }
 
@@ -57,6 +57,8 @@ int run_samfile2(const std::string &content, const Config &conf,
 {
     RuntimeState state{.path = std::filesystem::current_path().string(),
                        .env_vars = {}};
+
+    // std::cout << "Samfile Content\n" << content << "\n";
 
     Tasks tasks = parse(content, conf);
 
@@ -324,7 +326,7 @@ echo DOne
         return fullhelp();
     }
 
-    std::string filename;
+    std::string filename = "samfile";
 
     if (strutil::ends_with(arg1, ".samfile"))
     {
@@ -360,8 +362,8 @@ echo DOne
 
         // Run the old interpreter
         return run_samfile2(
-            argv[1], {},
-            parser.parse_macros(buildin_samfile_content + "\n\n" + content));
+            parser.parse_macros(buildin_samfile_content + "\n\n" + content), {},
+            argv[1]);
     }
 
     // Samfile Version 2 Interpreter

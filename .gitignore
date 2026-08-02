@@ -9,3 +9,5 @@ NOTICE.md.html
 /package-lock.json
 /bun.lock
 /node_modules
+
+/build-debug
