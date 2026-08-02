@@ -20,7 +20,7 @@ project(sfp)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-add_executable("${CMAKE_PROJECT_NAME}" "manager/sfpmain.cpp" "manager/sfp.rc")
+add_executable("${CMAKE_PROJECT_NAME}" "src/sfpmain.cpp" "src/sfp.rc")
 
 add_subdirectory(libs/sfp)
 add_subdirectory(thirdparty/fling)
