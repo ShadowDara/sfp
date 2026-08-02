@@ -6,7 +6,6 @@ NOTICE.md
 NOTICE.md.html
 /release
 
-
-/package.json
+/package-lock.json
 /bun.lock
 /node_modules

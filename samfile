@@ -24,5 +24,6 @@ g:
 gen:
   MKDIR release
   RUN ./build/sfp -pm NOTICE.iml NOTICE.md
-  RUN bunx sam-cli markdown NOTICE.md
+  RUN npm i
+  RUN npx sam-cli markdown NOTICE.md
   MV NOTICE.md.html release/sfp-notice.html

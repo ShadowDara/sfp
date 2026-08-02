@@ -37,13 +37,21 @@ CommandType parse_command(std::string_view s)
     if (s == "unsetenv")
         return CommandType::UnsetEnv;
     if (s == "prompt")
+    {
         return CommandType::Prompt;
+    }
     if (s == "win")
+    {
         return CommandType::Win;
+    }
     if (s == "lin")
+    {
         return CommandType::Lin;
+    }
     if (s == "mac")
+    {
         return CommandType::Mac;
+    }
 
     return CommandType::ErrorType;
 }
@@ -101,15 +109,86 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
 
             return Env{CommandType::Env, key, value};
         }
-        else
-        {
-            handle_failure("Invalid env command: env KEY=VALUE", config,
-                           metadata);
-            return std::nullopt;
-        }
+
+        handle_failure("Invalid env command: env KEY=VALUE", config, metadata);
+        return std::nullopt;
     }
 
         // Others add here
+    case CommandType::CdWin:
+    case CommandType::CdMac:
+    case CommandType::CdLin:
+    case CommandType::EnvWin:
+    case CommandType::EnvMac:
+    case CommandType::EnvLin:
+    case CommandType::RunWin:
+    case CommandType::RunMac:
+    case CommandType::RunLin:
+    case CommandType::ExecuteTask:
+    case CommandType::ExecuteTaskWin:
+    case CommandType::ExecuteTaskMac:
+    case CommandType::ExecuteTaskLin:
+    case CommandType::Rm:
+    case CommandType::RmWin:
+    case CommandType::RmMac:
+    case CommandType::RmLin:
+    case CommandType::Mkdir:
+    case CommandType::MkdirWin:
+    case CommandType::MkdirMac:
+    case CommandType::MkdirLin:
+    case CommandType::Cp:
+    case CommandType::CpWin:
+    case CommandType::CpMac:
+    case CommandType::CpLin:
+    case CommandType::Mv:
+    case CommandType::MvWin:
+    case CommandType::MvMac:
+    case CommandType::MvLin:
+    case CommandType::Sleep:
+    case CommandType::SleepWin:
+    case CommandType::SleepMac:
+    case CommandType::SleepLin:
+    case CommandType::Shell:
+    case CommandType::ShellWin:
+    case CommandType::ShellMac:
+    case CommandType::ShellLin:
+    case CommandType::Echo:
+    case CommandType::EchoWin:
+    case CommandType::EchoMac:
+    case CommandType::EchoLin:
+    case CommandType::Warn:
+    case CommandType::WarnWin:
+    case CommandType::WarnMac:
+    case CommandType::WarnLin:
+    case CommandType::Error:
+    case CommandType::ErrorWin:
+    case CommandType::ErrorMac:
+    case CommandType::ErrorLin:
+    case CommandType::Touch:
+    case CommandType::TouchWin:
+    case CommandType::TouchMac:
+    case CommandType::TouchLin:
+    case CommandType::Write:
+    case CommandType::WriteWin:
+    case CommandType::WriteMac:
+    case CommandType::WriteLin:
+    case CommandType::Append:
+    case CommandType::AppendWin:
+    case CommandType::AppendMac:
+    case CommandType::AppendLin:
+    case CommandType::UnsetEnv:
+    case CommandType::UnsetEnvWin:
+    case CommandType::UnsetEnvMac:
+    case CommandType::UnsetEnvLin:
+    case CommandType::Prompt:
+    case CommandType::PromptWin:
+    case CommandType::PromptMac:
+    case CommandType::PromptLin:
+    case CommandType::Win:
+    case CommandType::Lin:
+    case CommandType::Mac:
+    case CommandType::ErrorType:
+        break;
     }
 }
 

@@ -34,10 +34,15 @@ jobs:
 
       - name: Build
         run: cmake --build build --config Release
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Package
         shell: bash
         run: |
+          mkdir release
           ./build/${{ matrix.exe }} gen || ./build/Release/${{ matrix.exe }} gen
           cp build/${{ matrix.exe }} release/ || cp build/Release/${{ matrix.exe }} release/
           cd release
