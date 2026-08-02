@@ -1,0 +1,4 @@
+#pragma once
+
+// For the Icon
+IDI_ICON1 ICON DISCARDABLE "sfpicon.ico"

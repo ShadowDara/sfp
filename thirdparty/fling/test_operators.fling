@@ -1,0 +1,48 @@
+// Test der "!"-Operator und "==" Operator
+let a = true;
+let b = false;
+let c = 5;
+let d = 0;
+
+// Test des "!" Operators
+let notA = !a;
+let notB = !b;
+let notC = !c;
+let notD = !d;
+
+// Test des "==" Operators
+let eq1 = false == false;
+let eq2 = true == true;
+let eq3 = true == false;
+let eq4 = 5 == 5;
+let eq5 = 0 == 0;
+
+// Kombinationen
+let combined1 = !(false == false);
+let combined2 = !true && false;
+let combined3 = !false || true;
+
+let x = 0;
+
+// Ausgaben
+if eq1 {
+    x = 1
+}
+
+if eq2 {
+    x = 2
+}
+
+if (!eq3) {
+    x = 3
+}
+
+if (eq4) {
+    x = 4
+}
+
+if (notB) {
+    x = 99
+}
+
+print(x)

@@ -12,28 +12,25 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+project ("samfileparser++")
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE) #link time optimization
+add_library(samfileparserlib)
 
 
-project(sfp)
+# credit to
+#https://github.com/meemknight/raylibCmakeSetup
 
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# MY_SOURCES is defined to be a list of all the source files for my game 
+# DON'T ADD THE SOURCES BY HAND, they are already added with this macro
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-add_executable("${CMAKE_PROJECT_NAME}" "manager/sfpmain.cpp" "manager/sfp.rc")
 
-add_subdirectory(libs/sfp)
-add_subdirectory(thirdparty/fling)
-add_subdirectory(libs/macroparser)
-add_subdirectory(thirdparty/kvp)
-add_subdirectory(libs/batch2)
-
-target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
-    samfileparserlib
-    fling
-    macroparserlib
-    batch2lib
-    kvp
+# include dir
+target_include_directories(samfileparserlib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+target_sources(samfileparserlib PRIVATE
+	${MY_SOURCES}
 )
+
+set_property(TARGET samfileparserlib PROPERTY CXX_STANDARD 20)
 
 # TODO: Fügen Sie bei Bedarf Tests hinzu, und installieren Sie Ziele.

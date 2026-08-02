@@ -1,0 +1,59 @@
+# Coment
+
+print(45) 
+print(true)
+print(66, 420, 13)
+
+fn add(x, y) {
+	let result = x + y;
+	print(result)
+
+	result
+}
+
+print(add(10, 10))
+
+fn makeAdder (offset) {
+
+  fn add (x, y)  {
+    x + y + offset
+  }
+
+  add
+}
+
+const adder = makeAdder(1);
+
+print(adder(10, 5))
+
+let foo = 50 / 2;
+
+print(foo)
+
+const obj = {
+  x: 100,
+  y: 32,
+  foo: foo,
+  complex: {
+    bar: true,
+  },
+};
+
+let f = obj.complex.bar;
+foo = obj.foo + 5
+
+print(f)
+print(foo)
+
+let arr = [1, 2, 3];
+print(arr[0])
+
+let hallo = "Hallo";
+print(hallo)
+
+print(8)
+
+
+let hh = 6;
+hh = hh + 1
+print(hh)

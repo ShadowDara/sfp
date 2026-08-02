@@ -1,0 +1,94 @@
+// Standardbibliothek für Fling (geschrieben in Fling selbst)
+// Diese Datei enthält Hilfsfunktionen, die du in deinen Programmen importieren kannst.
+// Annahme: Du lädst diese Datei in deinen Interpreter (z.B. über eine native load-Funktion oder manuell).
+
+// Mathematische Funktionen
+function add(a, b) {
+    return a + b;
+}
+
+function sub(a, b) {
+    return a - b;
+}
+
+function mul(a, b) {
+    return a * b;
+}
+
+function div(a, b) {
+    if (b == 0) {
+        return "Error: Division by zero";
+    }
+    return a / b;
+}
+
+// Array-Hilfsfunktionen
+function array_push(arr, item) {
+    // Simuliert push: Erstellt ein neues Array mit dem hinzugefügten Element
+    let new_arr = [];
+    let i = 0;
+    while (i < arr.length) {
+        new_arr[i] = arr[i];
+        i = i + 1;
+    }
+    new_arr[arr.length] = item;
+    return new_arr;
+}
+
+function array_pop(arr) {
+    // Simuliert pop: Gibt das letzte Element zurück und ein neues Array ohne es
+    if (arr.length == 0) {
+        return "Error: Array is empty";
+    }
+    let last = arr[arr.length - 1];
+    let new_arr = [];
+    let i = 0;
+    while (i < arr.length - 1) {
+        new_arr[i] = arr[i];
+        i = i + 1;
+    }
+    return { popped: last, array: new_arr };
+}
+
+function array_map(arr, func) {
+    // Wendet eine Funktion auf jedes Element an und gibt ein neues Array zurück
+    let new_arr = [];
+    let i = 0;
+    while (i < arr.length) {
+        new_arr[i] = func(arr[i]);
+        i = i + 1;
+    }
+    return new_arr;
+}
+
+function array_filter(arr, func) {
+    // Filtert Elemente basierend auf einer Funktion
+    let new_arr = [];
+    let j = 0;
+    let i = 0;
+    while (i < arr.length) {
+        if (func(arr[i])) {
+            new_arr[j] = arr[i];
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    return new_arr;
+}
+
+// Beispiel für eine Schleifen-Hilfsfunktion
+function range(start, end) {
+    // Erstellt ein Array von start bis end-1
+    let arr = [];
+    let i = start;
+    while (i < end) {
+        arr[arr.length] = i;
+        i = i + 1;
+    }
+    return arr;
+}
+
+// Beispiel-Nutzung in deinem Code:
+// let nums = [1, 2, 3];
+// let doubled = array_map(nums, function(x) { return x * 2; });  // [2, 4, 6]
+// let evens = array_filter(nums, function(x) { return x % 2 == 0; });  // [2]
