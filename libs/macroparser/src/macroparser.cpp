@@ -1377,3 +1377,5 @@ Macro MacroParser::get_macro(const std::string &name)
 {
     return macros.at(name);
 }
+
+void MacroParser::clear_macros() { macros.clear(); }

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cctype>
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <sstream>
@@ -11,8 +12,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <fstream>
-
 
 namespace StringUtils
 {
@@ -33,14 +32,14 @@ namespace StringUtils
         return str.substr(start, end - start);
     }
 
-    // Prüft, ob String mit anderem String beginnt
+    // Prï¿½ft, ob String mit anderem String beginnt
     inline bool starts_with(const std::string &str, const std::string &prefix)
     {
         return str.size() >= prefix.size() &&
                str.compare(0, prefix.size(), prefix) == 0;
     }
 
-    // Prüft, ob String an Position pos einen String enthält
+    // Prï¿½ft, ob String an Position pos einen String enthï¿½lt
     inline bool match_at(const std::string &str, size_t pos,
                          const std::string &value)
     {
@@ -159,9 +158,9 @@ namespace MacroParserUtils
         bool functionLike = false;
 
         // true, wenn die Parameterliste mit "..." endet (variadisches Makro,
-        // z.B. "#define LOG(fmt, ...) ..."). Zusätzliche Aufrufargumente
-        // jenseits der benannten Parameter werden dann über den speziellen
-        // Bezeichner __VA_ARGS__ im Body verfügbar gemacht.
+        // z.B. "#define LOG(fmt, ...) ..."). Zusï¿½tzliche Aufrufargumente
+        // jenseits der benannten Parameter werden dann ï¿½ber den speziellen
+        // Bezeichner __VA_ARGS__ im Body verfï¿½gbar gemacht.
         bool variadic = false;
 
         std::vector<std::string> parameters;
@@ -183,11 +182,11 @@ class MacroParser
     std::string expandText(const std::string &text,
                            std::unordered_set<std::string> &expanding);
 
-    // Wie expandText, aber speziell für #if-Ausdrücke: das Argument
+    // Wie expandText, aber speziell fï¿½r #if-Ausdrï¿½cke: das Argument
     // von "defined(NAME)" / "defined NAME" wird NICHT expandiert,
-    // sonst würde z.B. "#if defined(FOO)" kaputtgehen sobald FOO
-    // ein Objekt-Makro ist (FOO würde textuell durch seinen Wert
-    // ersetzt, bevor "defined" überhaupt ausgewertet wird).
+    // sonst wï¿½rde z.B. "#if defined(FOO)" kaputtgehen sobald FOO
+    // ein Objekt-Makro ist (FOO wï¿½rde textuell durch seinen Wert
+    // ersetzt, bevor "defined" ï¿½berhaupt ausgewertet wird).
     std::string expandTextForIf(const std::string &text,
                                 std::unordered_set<std::string> &expanding);
 
@@ -195,7 +194,7 @@ class MacroParser
                             std::unordered_set<std::string> &expanding);
 
     // Versucht ab Position 'i' im Text 'text' einen Aufruf des
-    // funktionsähnlichen Makros 'name' (inkl. Klammer-Argumentliste,
+    // funktionsï¿½hnlichen Makros 'name' (inkl. Klammer-Argumentliste,
     // auch verschachtelt) zu parsen und zu expandieren.
     bool tryExpandFunctionCall(const std::string &text, size_t identStart,
                                size_t identEnd, const std::string &name,
@@ -211,7 +210,7 @@ class MacroParser
     //                  Rohtexte von a und b zu einem neuen Token
     //  - sonst      -> normale Ersetzung durch den bereits
     //                  makro-expandierten Argumentwert
-    // 'params' enthält die Parameternamen (inkl. ggf. "__VA_ARGS__"
+    // 'params' enthï¿½lt die Parameternamen (inkl. ggf. "__VA_ARGS__"
     // als letztem Eintrag bei variadischen Makros), 'rawValues' die
     // unexpandierten (nur getrimmten) Argumenttexte und
     // 'expandedValues' die bereits rekursiv makroexpandierten
@@ -225,7 +224,7 @@ class MacroParser
     // Wandelt ein rohes Makroargument in die quotierte, escapte
     // String-Literal-Form um, die der '#'-Stringize-Operator
     // produziert (internes Whitespace wird auf je ein Leerzeichen
-    // reduziert, führendes/folgendes Whitespace entfernt, '"' und
+    // reduziert, fï¿½hrendes/folgendes Whitespace entfernt, '"' und
     // '\' werden escaped).
     std::string stringizeArg(const std::string &raw);
 
@@ -252,4 +251,6 @@ class MacroParser
     bool contains_macro(const std::string &name);
 
     MacroParserUtils::Macro get_macro(const std::string &name);
+
+    void clear_macros();
 };

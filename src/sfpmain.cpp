@@ -39,9 +39,9 @@ int fullhelp()
     return 0;
 }
 
-std::string loadsamfile()
+std::string loadsamfile(const std::string &filename)
 {
-    std::ifstream file("samfile");
+    std::ifstream file(filename);
     if (!file)
     {
         std::cerr << RED << "Error while reading samfile" << END << "\n";
@@ -50,33 +50,6 @@ std::string loadsamfile()
     std::stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
-}
-
-// Function to run a samfile by name, with a set of visited tasks to avoid
-// cycles
-int run_samfile(std::string_view command, const Config &conf,
-                const std::string &content)
-{
-    RuntimeState state{.path = std::filesystem::current_path().string(),
-                       .env_vars = {}};
-
-    // preprocess the content here
-    MacroParser parser;
-
-    auto content2 = parser.parse_macros(content);
-
-    Tasks tasks = parse(content2, conf);
-
-    // Check for cycled dependencies
-    validate_all(tasks);
-
-    // already visited tasks
-    std::unordered_set<std::string> visited;
-
-    // Execute task
-    run_task(tasks, command, visited, state, conf);
-
-    return 0;
 }
 
 int run_samfile2(const std::string &content, const Config &conf,
@@ -351,15 +324,23 @@ echo DOne
         return fullhelp();
     }
 
+    std::string filename;
+
+    if (strutil::ends_with(arg1, ".samfile"))
+    {
+        filename = arg1;
+    }
+
     MacroParser parser;
 
     // combine built-in + file
-    std::string content = buildin_samfile_content + "\n\n" + loadsamfile();
+    // std::string content = buildin_samfile_content + "\n\n" + loadsamfile();
+    std::string content = loadsamfile(filename);
 
-    parser.parse_macros(content);
-
+    // Version of the samfile
     int version = 0;
 
+    // Check if Version exists
     if (parser.contains_macro("VERSION"))
     {
         auto macro = parser.get_macro("VERSION");
@@ -375,8 +356,12 @@ echo DOne
             return help();
         }
 
+        parser.clear_macros();
+
         // Run the old interpreter
-        return run_samfile(argv[1], {}, content);
+        return run_samfile2(
+            argv[1], {},
+            parser.parse_macros(buildin_samfile_content + "\n\n" + content));
     }
 
     // Samfile Version 2 Interpreter
@@ -397,7 +382,9 @@ echo DOne
         seting = KeyValueParser2::parse_kvp2(set);
         parser.remove_macro("SECTION_SETTINGS");
         parser.add_macro("SECTION_SAMFILE", {});
-        return run_samfile2(parser.parse_macros(content), {}, argv[1]);
+        return run_samfile2(
+            parser.parse_macros(buildin_samfile_content + "\n\n" + content), {},
+            argv[1]);
     }
 
     std::cerr << RED << "Wrong samfile Version selected: " << version << END
