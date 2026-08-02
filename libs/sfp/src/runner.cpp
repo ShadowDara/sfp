@@ -1,3 +1,4 @@
+#include "sfp/ast.hpp"
 #include <sfp/runner.hpp>
 
 // Filesystem
@@ -197,6 +198,43 @@ int run_task(const Tasks &tasks, std::string_view name,
                 // CD
                 if constexpr (std::is_same_v<T, Cd>)
                 {
+                    bool allowed = false;
+
+                    switch (cmd.type)
+                    {
+                    case CommandType::Cd:
+                        // Plattformunabhängig
+                        allowed = true;
+                        break;
+
+#ifdef _WIN32
+                    case CommandType::CdWin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __linux__
+                    case CommandType::CdLin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __APPLE__
+                    case CommandType::CdMac:
+                        allowed = true;
+                        break;
+#endif
+
+                    default:
+                        break;
+                    }
+
+                    if (!allowed)
+                    {
+                        // Command gehört zu einer anderen Plattform
+                        return;
+                    }
+
                     std::error_code ec;
 
                     fs::path p(cmd.path);
@@ -206,7 +244,7 @@ int run_task(const Tasks &tasks, std::string_view name,
                     if (ec)
                     {
                         std::cerr << "cd failed: " << ec.message() << '\n';
-                        // return 0;
+                        return;
                     }
 
                     state.path = canonical;
@@ -215,14 +253,89 @@ int run_task(const Tasks &tasks, std::string_view name,
                 // RUN
                 else if constexpr (std::is_same_v<T, Run>)
                 {
+                    bool allowed = false;
+
+                    switch (cmd.type)
+                    {
+                    case CommandType::Run:
+                        // Plattformunabhängig
+                        allowed = true;
+                        break;
+
+#ifdef _WIN32
+                    case CommandType::RunWin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __linux__
+                    case CommandType::RunLin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __APPLE__
+                    case CommandType::RunMac:
+                        allowed = true;
+                        break;
+#endif
+
+                    default:
+                        break;
+                    }
+
+                    if (!allowed)
+                    {
+                        // Command gehört zu einer anderen Plattform
+                        return;
+                    }
+
                     runCommand(cmd.name, state);
                 }
 
                 // ENV
                 else if constexpr (std::is_same_v<T, Env>)
                 {
+                    bool allowed = false;
+
+                    switch (cmd.type)
+                    {
+                    case CommandType::Env:
+                        // Plattformunabhängig
+                        allowed = true;
+                        break;
+
+#ifdef _WIN32
+                    case CommandType::EnvWin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __linux__
+                    case CommandType::EnvLin:
+                        allowed = true;
+                        break;
+#endif
+
+#ifdef __APPLE__
+                    case CommandType::EnvMac:
+                        allowed = true;
+                        break;
+#endif
+
+                    default:
+                        break;
+                    }
+
+                    if (!allowed)
+                    {
+                        // Command gehört zu einer anderen Plattform
+                        return;
+                    }
+
                     // cmd.key
                     // cmd.value
+                    local_state.env_vars[cmd.name] = cmd.value;
                 }
 
                 // SLEEP

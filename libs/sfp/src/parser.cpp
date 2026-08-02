@@ -3,39 +3,73 @@
 CommandType parse_command(std::string_view s)
 {
     if (s == "cd")
+    {
         return CommandType::Cd;
+    }
     if (s == "env")
+    {
         return CommandType::Env;
+    }
     if (s == "run")
+    {
         return CommandType::Run;
+    }
     if (s == "task")
+    {
         return CommandType::ExecuteTask;
+    }
     if (s == "rm")
+    {
         return CommandType::Rm;
+    }
     if (s == "mkdir")
+    {
         return CommandType::Mkdir;
+    }
     if (s == "cp")
+    {
         return CommandType::Cp;
+    }
     if (s == "mv")
+    {
         return CommandType::Mv;
+    }
     if (s == "sleep")
+    {
         return CommandType::Sleep;
+    }
     if (s == "shell")
+    {
         return CommandType::Shell;
+    }
     if (s == "echo")
+    {
         return CommandType::Echo;
+    }
     if (s == "warn")
+    {
         return CommandType::Warn;
+    }
     if (s == "error")
+    {
         return CommandType::Error;
+    }
     if (s == "touch")
+    {
         return CommandType::Touch;
+    }
     if (s == "write")
+    {
         return CommandType::Write;
+    }
     if (s == "append")
+    {
         return CommandType::Append;
+    }
     if (s == "unsetenv")
+    {
         return CommandType::UnsetEnv;
+    }
     if (s == "prompt")
     {
         return CommandType::Prompt;
@@ -79,6 +113,36 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
         return Cd{CommandType::Cd, args[1]};
     }
 
+    case CommandType::CdWin:
+    {
+        if (args.size() != 2)
+        {
+            throw std::runtime_error("Invalid CD command at line " +
+                                     std::to_string(idx));
+        }
+        return Cd{CommandType::CdWin, args[1]};
+    }
+
+    case CommandType::CdMac:
+    {
+        if (args.size() != 2)
+        {
+            throw std::runtime_error("Invalid CD command at line " +
+                                     std::to_string(idx));
+        }
+        return Cd{CommandType::CdMac, args[1]};
+    }
+
+    case CommandType::CdLin:
+    {
+        if (args.size() != 2)
+        {
+            throw std::runtime_error("Invalid CD command at line " +
+                                     std::to_string(idx));
+        }
+        return Cd{CommandType::CdLin, args[1]};
+    }
+
     // RUN
     case CommandType::Run:
     {
@@ -93,10 +157,49 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
         return Run{CommandType::Run, command};
     }
 
+    case CommandType::RunWin:
+    {
+        std::string command;
+
+        for (size_t i = 1; i < args.size(); i++)
+        {
+            command += args[i];
+            command += " ";
+        }
+
+        return Run{CommandType::RunWin, command};
+    }
+
+    case CommandType::RunMac:
+    {
+        std::string command;
+
+        for (size_t i = 1; i < args.size(); i++)
+        {
+            command += args[i];
+            command += " ";
+        }
+
+        return Run{CommandType::RunMac, command};
+    }
+
+    case CommandType::RunLin:
+    {
+        std::string command;
+
+        for (size_t i = 1; i < args.size(); i++)
+        {
+            command += args[i];
+            command += " ";
+        }
+
+        return Run{CommandType::RunLin, command};
+    }
+
     // ENV
     case CommandType::Env:
     {
-        std::string arg = args[1];
+        const std::string &arg = args[1];
 
         auto pos = arg.find('=');
 
@@ -114,16 +217,67 @@ std::optional<Command> parse_line(const std::string &line, const Config &config,
         return std::nullopt;
     }
 
-        // Others add here
-    case CommandType::CdWin:
-    case CommandType::CdMac:
-    case CommandType::CdLin:
     case CommandType::EnvWin:
+    {
+        const std::string &arg = args[1];
+
+        auto pos = arg.find('=');
+
+        if (pos != std::string::npos)
+        {
+            std::string key = arg.substr(0, pos);
+            std::string value = arg.substr(pos + 1);
+
+            trim(key);
+
+            return Env{CommandType::EnvWin, key, value};
+        }
+
+        handle_failure("Invalid env command: env KEY=VALUE", config, metadata);
+        return std::nullopt;
+    }
+
     case CommandType::EnvMac:
+    {
+        const std::string &arg = args[1];
+
+        auto pos = arg.find('=');
+
+        if (pos != std::string::npos)
+        {
+            std::string key = arg.substr(0, pos);
+            std::string value = arg.substr(pos + 1);
+
+            trim(key);
+
+            return Env{CommandType::EnvMac, key, value};
+        }
+
+        handle_failure("Invalid env command: env KEY=VALUE", config, metadata);
+        return std::nullopt;
+    }
+
     case CommandType::EnvLin:
-    case CommandType::RunWin:
-    case CommandType::RunMac:
-    case CommandType::RunLin:
+    {
+        const std::string &arg = args[1];
+
+        auto pos = arg.find('=');
+
+        if (pos != std::string::npos)
+        {
+            std::string key = arg.substr(0, pos);
+            std::string value = arg.substr(pos + 1);
+
+            trim(key);
+
+            return Env{CommandType::EnvLin, key, value};
+        }
+
+        handle_failure("Invalid env command: env KEY=VALUE", config, metadata);
+        return std::nullopt;
+    }
+
+        // Others add here
     case CommandType::ExecuteTask:
     case CommandType::ExecuteTaskWin:
     case CommandType::ExecuteTaskMac:
