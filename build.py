@@ -1,7 +1,7 @@
 # python file for the builtin samfile
 
 input_path = "buildin.samfile"
-output_path = "include/sfp/generated.hpp"
+output_path = "libs/sfp/include/sfp/generated.hpp"
 
 with open(input_path, "r", encoding="utf-8") as f:
     lines = f.readlines()
