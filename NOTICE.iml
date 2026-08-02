@@ -8,3 +8,5 @@ This is the buildtool for samfiles.
 ```
 #include "LICENSE"
 ```
+
+#include "changelog.md"
