@@ -31,6 +31,7 @@ gen:
     RUN npm i
     RUN npx sam-cli markdown NOTICE.md
     MV NOTICE.md.html release/sfp-notice.html
+    MV NOTICE.md release/sfp-notice.md
 
 test:
     RUN echo hello

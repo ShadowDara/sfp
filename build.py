@@ -10,7 +10,7 @@ with open(input_path, "r", encoding="utf-8") as f:
 filtered_lines = [
     line.rstrip()
     for line in lines
-    if not line.lstrip().startswith("#") and line.strip()
+    if not line.lstrip().startswith("#") and not line.lstrip().startswith("//") and not line.lstrip().startswith("--")and line.strip()
 ]
 
 filtered = "\n".join(filtered_lines)

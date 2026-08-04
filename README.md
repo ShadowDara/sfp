@@ -1,6 +1,6 @@
 # sfp
 
-the parser for samfiles.
+the new parser for samfiles.
 
 *NOT FINISHED YET, but will be better than the RUST Version*
 
