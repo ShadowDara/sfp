@@ -1,4 +1,11 @@
-                    GNU GENERAL PUBLIC LICENSE
+(Little Info, there is an Additon to the License at the end of the
+file, please reconsider that too)
+
+
+---
+
+
+		      GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
@@ -672,3 +679,24 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
+
+
+---
+
+
+Truthfulness Addendum
+
+As a condition of this license, you may not knowingly make false or
+misleading statements about the Work, including its functionality,
+operation, performance, origin, or method of creation.
+
+Any description, explanation, demonstration, or documentation of the
+Work must be made in good faith and must reflect its actual behavior
+and capabilities to the best of your knowledge.
+
+Knowingly providing false or misleading information about the Work
+automatically terminates the permissions granted under this license.
+
+More Infos at https://shadowdara.github.io/license/v2
+
+

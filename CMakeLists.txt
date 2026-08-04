@@ -44,7 +44,7 @@ add_custom_target(
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 
-add_executable("${CMAKE_PROJECT_NAME}" "src/sfpmain.cpp" "src/sfp.rc" ${VERSION_HEADER})
+add_executable("${CMAKE_PROJECT_NAME}" "src/main.cpp" "src/sfp.rc" ${VERSION_HEADER})
 
 
 add_dependencies(
