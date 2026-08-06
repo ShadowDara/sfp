@@ -1,9 +1,18 @@
 #include "README.md"
 
+
+## Buildin samfile
+
+```
+#include "buildin.samfile"
+```
+
+
 ## LICENSE
 
 ```
 #include "LICENSE"
 ```
+
 
 #include "changelog.md"

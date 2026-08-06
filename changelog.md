@@ -1,6 +1,15 @@
 # Changelog SFP
 
 
+## Version 0.3.4
+
+- fixed a bug with the task selection for samfiles
+- fixed a bug when running files which are ending as *.samfile* as samfiles
+- added `buildin samfile` to the notice file
+- added messages db
+- updated LICENSE
+
+
 ## Version 0.3.3 02.08.2026
 
 - added notice file
