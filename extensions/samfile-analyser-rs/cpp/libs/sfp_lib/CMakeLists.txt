@@ -30,4 +30,4 @@ target_include_directories(sfplib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
 set_property(TARGET sfplib PROPERTY CXX_STANDARD 20)
 
-target_link_libraries(sfplib PRIVATE batch2)
+target_link_libraries(sfplib PRIVATE batch2lib)
