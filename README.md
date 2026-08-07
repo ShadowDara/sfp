@@ -17,3 +17,25 @@ platform!
 My Idea to solve this is one single file which can be splitted in
 multiple sections.
 
+
+## Sections
+
+
+### Defaults
+
+```
+%%section TYPES
+
+SAMFILE=SAMFILE
+BATCH2=BATCH2
+FLING=FLING
+SETTINGS=KVP
+TYPES=KVP
+
+%%endsection
+```
+
+Every other section with is not listed there has no default type and will result
+in a programm crash when called without defining their type. It will be possible
+to change the type of the default types but please dont do this lol.
+

@@ -1,4 +1,4 @@
-# Changelog SFP
+# Changelog
 
 
 ## Version 0.3.4
@@ -8,6 +8,7 @@
 - added `buildin samfile` to the notice file
 - added messages db
 - updated LICENSE
+- added a new section parser function to split the file into sections instead of using the macro parser for that.
 
 
 ## Version 0.3.3 02.08.2026
