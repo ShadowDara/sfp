@@ -1,2 +1,19 @@
 # This is a Version 2 Test for samfiles
 
+#define VERSION 2
+
+
+%%section SAMFILE
+
+
+%%endsection
+
+
+%%section TYPES
+
+%%endsection
+
+
+%%section BATCH2
+
+%%endsection

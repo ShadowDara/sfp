@@ -1,7 +1,9 @@
 // Entry Point for the SAMFILE Parser
 
+#include "flingrunner.hpp"
 #include "sections.hpp"
 #include "settings.hpp"
+#include "test.hpp"
 #include "version.hpp"
 #include <batch2.hpp>
 #include <cassert>
@@ -12,22 +14,9 @@
 #include <sfp/runner.hpp>
 #include <strutil.hpp>
 #include <unordered_map>
-#include "test.hpp"
-
 
 using MAP = std::unordered_map<std::string, std::string>;
 using KVPMAP = KeyValueParser2::KeyValueStore<MAP>;
-
-enum class SECTION : std::uint8_t
-{
-    NONE,
-    SAMFILE,
-    FLING,
-    BATCH2,
-    DATA,
-    DATA_JSON
-};
-
 
 // Function to print the small help message when no enough arguments
 int help()
@@ -37,7 +26,6 @@ int help()
     return 0;
 }
 
-
 // Function to print the full help messages
 int fullhelp()
 {
@@ -45,7 +33,6 @@ int fullhelp()
                  ". Commit: " BUILD_COMMIT "\n";
     return 0;
 }
-
 
 // Function to load the samfile
 std::string loadsamfile(const std::string &filename)
@@ -60,7 +47,6 @@ std::string loadsamfile(const std::string &filename)
     buffer << file.rdbuf();
     return buffer.str();
 }
-
 
 // Function to run a samfile
 int run_samfile2(const std::string &content, const Config &conf,
@@ -83,13 +69,47 @@ int run_samfile2(const std::string &content, const Config &conf,
     return run_task(tasks, cmd, visited, state, conf);
 }
 
+int runner(MAP sections, int argc, char *argv[])
+{
+    // Load the settings
+    KVPMAP seting;
+    seting = KeyValueParser2::parse_kvp2(sections["SETTINGS"]);
+
+    // Check what the settings say before running something
+    std::string entry = seting.get("ENTRYPOINT").value_or("BATCH2");
+    if (entry == "SAMFILE")
+    {
+        auto task = seting.get("ENTRYTASK").value_or("");
+        if (task == "")
+        {
+            std::cerr << "Error\n";
+            return 1;
+        }
+
+        run_samfile2(sections["SAMFILE"], {}, task);
+    }
+
+    if (entry == "FLING")
+    {
+        runFling(sections["FLING"]);
+    }
+
+    if (argc < 2 && entry == "BATCH2")
+    {
+        auto tokens = batch2::tokenize(sections["BATCH2"]);
+        batch2::Interpreter2 interp;
+        return interp.execute(tokens);
+    }
+
+    return 1;
+}
 
 // Main function to start the program
 int main(int argc, char *argv[])
 {
 
 #ifdef NNDEBUG
-	test();
+    test();
 #endif
 
     // Check the first argument
@@ -114,57 +134,78 @@ int main(int argc, char *argv[])
         return interp.execute(tokens);
     }
 
-    // Check for macroparsing
-    // pm -> parse macros
+    // Check .fling files to execute them
+    // When first arg ends with .fling
     //
-    if (arg1 == "-pm")
+    if (strutil::ends_with(arg1, ".fling"))
     {
-        if (argc >= 4)
+        std::ifstream file(arg1);
+        if (!file)
         {
-            std::ifstream file(argv[2]);
-            if (!file)
+            std::cerr << RED << "Error while reading fling file" << END << "\n";
+            return 1;
+        }
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        runFling(buffer.str());
+    }
+
+    // -
+    if (strutil::starts_with(arg1, "-"))
+    {
+        // Check for macroparsing
+        // pm -> parse macros
+        //
+        if (arg1 == "-pm")
+        {
+            if (argc >= 4)
             {
-                std::cerr << RED << "Error while opening file" << END << "\n";
-                return 1;
+                std::ifstream file(argv[2]);
+                if (!file)
+                {
+                    std::cerr << RED << "Error while opening file" << END
+                              << "\n";
+                    return 1;
+                }
+                std::stringstream buffer;
+                buffer << file.rdbuf();
+                std::string con = buffer.str();
+
+                MacroParser parser;
+                con = parser.parse_macros(con);
+
+                std::ofstream outfile(argv[3]);
+                if (!outfile)
+                {
+                    std::cerr << RED << "Error while opening outfile" << END
+                              << "\n";
+                    return 1;
+                }
+
+                outfile << con;
+
+                return 0;
             }
-            std::stringstream buffer;
-            buffer << file.rdbuf();
-            std::string con = buffer.str();
 
-            MacroParser parser;
-            con = parser.parse_macros(con);
+            std::cout << RED << "Missing file name after parse macros" << END
+                      << "\n";
+            return 1;
+        }
 
-            std::ofstream outfile(argv[3]);
-            if (!outfile)
-            {
-                std::cerr << RED << "Error while opening outfile" << END
-                          << "\n";
-                return 1;
-            }
-
-            outfile << con;
-
+        // Print version
+        //
+        if (arg1 == "--version" || arg1 == "-v")
+        {
+            std::cout << BUILD_VERSION "\n";
             return 0;
         }
 
-        std::cout << RED << "Missing file name after parse macros" << END
-                  << "\n";
-        return 1;
-    }
-
-    // Print version
-    //
-    if (arg1 == "--version" || arg1 == "-v")
-    {
-        std::cout << BUILD_VERSION "\n";
-        return 0;
-    }
-
-    // Help
-    //
-    if (arg1 == "--help" || arg1 == "-h")
-    {
-        return fullhelp();
+        // Help
+        //
+        if (arg1 == "--help" || arg1 == "-h")
+        {
+            return fullhelp();
+        }
     }
 
     // Name for the loaded samfile
@@ -199,6 +240,7 @@ int main(int argc, char *argv[])
     //
     auto sections = parse_Sections(content);
 
+    // Version 0
     // OLD SAMFILE INTERPRETER
     //
     if (version == 0)
@@ -210,27 +252,19 @@ int main(int argc, char *argv[])
         }
 
         // Run the old interpreter
-        return run_samfile2(
-            buildin_samfile_content + "\n\n" + sections[""], {},
-            argv[1]);
+        return run_samfile2(buildin_samfile_content + "\n\n" + sections[""], {},
+                            argv[1]);
     }
 
+    // Version 2
     // Samfile Version 2 Interpreter
     //
     if (version == 2)
     {
-        if (argc < 2)
-        {
-            auto tokens = batch2::tokenize(sections["BATCH2"]);
-            batch2::Interpreter2 interp;
-            return interp.execute(tokens);
-        }
-
-        KVPMAP seting;
-        seting = KeyValueParser2::parse_kvp2(sections["SETTINGS"]);
-        return run_samfile2(
-            buildin_samfile_content + "\n\n" + sections["SAMFILES"], {},
-            argv[1]);
+        return runner(sections, argc, argv);
+        // return run_samfile2(buildin_samfile_content + "\n\n" +
+        //                         sections["SAMFILES"],
+        //                     {}, argv[1], seting);
     }
 
     // An error appeared when the program got until here

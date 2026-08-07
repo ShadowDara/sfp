@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
 #include <iostream>
-
+#include <macroparser/macroparser.hpp>
+#include <string>
 
 inline void test()
 {
-	std::cout << "Running Debug Mode\n";
+    std::cout << "Running Debug Mode\n";
 
     // RUN Tests
 
@@ -184,4 +184,3 @@ echo DOne
 
     std::cout << parser2.parse_macros(test_samfile_content) << std::endl;
 }
-

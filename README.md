@@ -39,3 +39,10 @@ Every other section with is not listed there has no default type and will result
 in a programm crash when called without defining their type. It will be possible
 to change the type of the default types but please dont do this lol.
 
+
+## Settings
+
+```
+ENTRYPOINT=SAMFILE
+ENTRYTASK= (task name)
+```
