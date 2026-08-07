@@ -1,0 +1,22 @@
+{
+    "name": "samfile",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "activationEvents": [
+        "onLanguage:samfile"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "samfile",
+                "extensions": [
+                    ".sam",
+                    "Samfile"
+                ]
+            }
+        ]
+    }
+}
