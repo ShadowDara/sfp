@@ -1,6 +1,7 @@
 {
     "name": "samfile",
     "version": "0.0.1",
+    "publisher": "shadowdara",
     "engines": {
         "vscode": "^1.90.0"
     },
@@ -26,5 +27,8 @@
                 }
             }
         }
+    },
+    "dependencies": {
+        "vscode-languageclient": "^10.1.0"
     }
 }

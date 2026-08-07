@@ -17,6 +17,14 @@ struct Backend {
 }
 
 impl Backend {
+    async fn log(&self, msg: impl Into<String>) {
+        let msg = msg.into();
+
+        eprintln!("[SAMFILE LSP] {}", msg);
+
+        self.client.log_message(MessageType::INFO, msg).await;
+    }
+
     fn parse_defines(text: &str) -> HashMap<String, String> {
         let mut defs = HashMap::new();
 
@@ -71,8 +79,9 @@ impl Backend {
 
 #[tower_lsp::async_trait]
 impl LanguageServer for Backend {
-    async fn initialize(&self, _: InitializeParams) -> Result<InitializeResult> {
-        eprintln!("INITIALIZE CALLED");
+    async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
+        self.log(format!("INITIALIZE CALLED client={:?}", params.client_info))
+            .await;
 
         Ok(InitializeResult {
             capabilities: ServerCapabilities {
@@ -110,6 +119,12 @@ impl LanguageServer for Backend {
         &self,
         params: SemanticTokensParams,
     ) -> Result<Option<SemanticTokensResult>> {
+        self.log(format!(
+            "SEMANTIC TOKENS REQUEST {}",
+            params.text_document.uri
+        ))
+        .await;
+
         let docs = self.documents.read().await;
 
         let uri = params.text_document.uri.to_string();
@@ -121,58 +136,65 @@ impl LanguageServer for Backend {
 
         let mut tokens = Vec::new();
 
+        let mut last_line = 0;
+        let mut last_start = 0;
+
         for (line_idx, line) in doc.text.lines().enumerate() {
             let trimmed = line.trim_start();
+
+            let mut add_token = |start: usize, length: usize, token_type: u32| {
+                let delta_line = line_idx as u32 - last_line;
+
+                let delta_start = if delta_line == 0 {
+                    start as u32 - last_start
+                } else {
+                    start as u32
+                };
+
+                tokens.push(SemanticToken {
+                    delta_line,
+                    delta_start,
+                    length: length as u32,
+                    token_type,
+                    token_modifiers_bitset: 0,
+                });
+
+                last_line = line_idx as u32;
+                last_start = start as u32;
+            };
 
             // # Kommentar
             if trimmed.starts_with('#') && !trimmed.starts_with("#define") {
                 let start = line.find('#').unwrap();
 
-                tokens.push(SemanticToken {
-                    delta_line: line_idx as u32,
-                    delta_start: start as u32,
-                    length: line.len() as u32,
-                    token_type: 1,
-                    token_modifiers_bitset: 0,
-                });
+                add_token(start, line.len() - start, 1);
 
                 continue;
             }
 
             // // Kommentar
-            if trimmed.starts_with("//") {
-                let start = line.find("//").unwrap();
-
-                tokens.push(SemanticToken {
-                    delta_line: line_idx as u32,
-                    delta_start: start as u32,
-                    length: line.len() as u32,
-                    token_type: 1,
-                    token_modifiers_bitset: 0,
-                });
+            if let Some(start) = line.find("//") {
+                add_token(start, line.len() - start, 1);
 
                 continue;
             }
 
-            // #define Macro
+            // #define NAME
             if trimmed.starts_with("#define") {
                 let parts: Vec<&str> = line.split_whitespace().collect();
 
                 if parts.len() >= 2 {
                     let name = parts[1];
 
-                    let start = line.find(name).unwrap();
-
-                    tokens.push(SemanticToken {
-                        delta_line: line_idx as u32,
-                        delta_start: start as u32,
-                        length: name.len() as u32,
-                        token_type: 0,
-                        token_modifiers_bitset: 0,
-                    });
+                    if let Some(start) = line.find(name) {
+                        add_token(start, name.len(), 0);
+                    }
                 }
             }
         }
+
+        self.log(format!("generated {} semantic tokens", tokens.len()))
+            .await;
 
         Ok(Some(SemanticTokensResult::Tokens(SemanticTokens {
             result_id: None,
@@ -181,9 +203,7 @@ impl LanguageServer for Backend {
     }
 
     async fn initialized(&self, _: InitializedParams) {
-        self.client
-            .log_message(MessageType::INFO, "Samfile LSP started")
-            .await;
+        self.log("Samfile LSP started").await;
     }
 
     async fn shutdown(&self) -> Result<()> {
@@ -191,10 +211,19 @@ impl LanguageServer for Backend {
     }
 
     async fn did_open(&self, params: DidOpenTextDocumentParams) {
+        let uri = params.text_document.uri.to_string();
+
+        self.log(format!(
+            "OPEN {} ({} chars)",
+            uri,
+            params.text_document.text.len()
+        ))
+        .await;
+
         let mut docs = self.documents.write().await;
 
         docs.insert(
-            params.text_document.uri.to_string(),
+            uri,
             DocumentData {
                 text: params.text_document.text,
             },
@@ -202,12 +231,21 @@ impl LanguageServer for Backend {
     }
 
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
+        let uri = params.text_document.uri.to_string();
+
+        self.log(format!("CHANGE {}", uri)).await;
+
         let mut docs = self.documents.write().await;
 
-        if let Some(doc) = docs.get_mut(params.text_document.uri.as_str()) {
+        if let Some(doc) = docs.get_mut(&uri) {
             if let Some(change) = params.content_changes.first() {
+                self.log(format!("new document size={} chars", change.text.len()))
+                    .await;
+
                 doc.text = change.text.clone();
             }
+        } else {
+            self.log("CHANGE received for unknown document").await;
         }
     }
 
@@ -232,6 +270,8 @@ impl LanguageServer for Backend {
             None => return Ok(None),
         };
 
+        self.log(format!("HOVER word={}", word)).await;
+
         let defines = Self::parse_defines(&doc.text);
 
         if let Some(value) = defines.get(&word) {
@@ -244,12 +284,17 @@ impl LanguageServer for Backend {
             }));
         }
 
+        self.log(format!("no define found for {}", word)).await;
+
         Ok(None)
     }
 }
 
 #[tokio::main]
 async fn main() {
+    // Never stdout benutzen bei LSP
+    eprintln!("Samfile LSP starting ...");
+
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 

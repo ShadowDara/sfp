@@ -13,6 +13,7 @@ build:
     RUN ln -sf build/compile_commands.json compile_commands.json
     RUN cmake --build build
 
+# Build in Debug Mode
 debug:
     RUN cmake -B build-debug -DCMAKE_BUILD_TYPE=Debug
     RUN cmake --build build-debug -j
@@ -26,7 +27,7 @@ b:
 g:
     RUN python build.py
 
-# Generate Notice
+# Generate Noticehhhhhh
 gen:
     MKDIR release
     RUN ./build/sfp -pm NOTICE.iml NOTICE.md
