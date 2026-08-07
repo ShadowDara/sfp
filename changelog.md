@@ -12,6 +12,7 @@
 - started a samfile analyzer extension for VSCode
 - started making a Features document for sfp and samfiles
 - published version 0.0.7 of the syntax extension for VSCode
+- added vim extension for samfiles
 
 
 ## Version 0.3.3 02.08.2026

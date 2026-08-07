@@ -5,3 +5,5 @@ samfile linguist-language=Shell
 *.samfile linguist-language=Shell
 
 thirdparty/** linguist-vendored
+
+*.vim linguist-language=Vimscript
