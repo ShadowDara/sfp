@@ -1,3 +1,5 @@
+#define SEG seg
+
 r:
     TASK build
 
@@ -35,3 +37,8 @@ gen:
 
 test:
     RUN echo hello
+
+# Build the extension
+be:
+    CD extensions/samfile-vscode
+    RUN SEG build

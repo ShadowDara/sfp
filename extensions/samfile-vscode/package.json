@@ -2,7 +2,7 @@
     "name": "samfile",
     "displayName": "Samfile Sytax",
     "description": "Syntax Highlighting for Samfiles",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "shadowdara",
     "icon": "icons/samfile.png",
     "engines": {
@@ -18,7 +18,9 @@
                 "aliases": [
                     "Samfile"
                 ],
-                "extensions": [],
+                "extensions": [
+                    ".samfile"
+                ],
                 "filenames": [
                     "Samfile"
                 ],
@@ -32,7 +34,7 @@
                 "path": "./syntaxes/samfile.tmLanguage.json"
             }
         ],
-         "iconThemes": [
+        "iconThemes": [
             {
                 "id": "samfile-icons",
                 "label": "Samfile Icons",
