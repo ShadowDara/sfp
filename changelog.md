@@ -9,6 +9,9 @@
 - added messages db
 - updated LICENSE
 - added a new section parser function to split the file into sections instead of using the macro parser for that.
+- started a samfile analyzer extension for VSCode
+- started making a Features document for sfp and samfiles
+- published version 0.0.7 of the syntax extension for VSCode
 
 
 ## Version 0.3.3 02.08.2026

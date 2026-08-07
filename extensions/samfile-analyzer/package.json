@@ -1,0 +1,46 @@
+{
+    "name": "samfile",
+    "displayName": "Samfile Analyzer",
+    "description": "Analyzer for Samfiles",
+    "version": "0.0.0",
+    "publisher": "shadowdara",
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "main": "./dist/extension.js",
+    "scripts": {
+        "build": "tsc"
+    },
+    "contributes": {
+        "languages": [
+            {
+                "id": "samfile",
+                "aliases": [
+                    "Samfile"
+                ],
+                "extensions": [
+                    ".samfile"
+                ],
+                "filenames": [
+                    "samfile"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ]
+    },
+    "activationEvents": [
+        "onLanguage:samfile"
+    ],
+    "dependencies": {
+        "vscode-languageclient": "^10.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^26.1.2",
+        "@types/vscode": "^1.125.0",
+        "typescript": "^7.0.2"
+    },
+    "repository": {
+        "url": "https://github.com/shadowdara/sfp",
+        "directory": "extensions/samfile-analyzer"
+    }
+}

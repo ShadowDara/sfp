@@ -11,4 +11,7 @@ NOTICE.md.html
 /node_modules
 
 /build-debug
-extensions/samfile-vscode/samfile-0.0.6.vsix
+extensions/samfile-vscode/*.vsix
+
+/extensions/samfile-analyzer/dist
+node_modules

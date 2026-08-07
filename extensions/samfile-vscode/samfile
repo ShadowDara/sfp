@@ -3,3 +3,6 @@
 # Package the extension
 build:
     SHELL vsce package
+
+b:
+    TASK build

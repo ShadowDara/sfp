@@ -1,2 +1,3 @@
 1786020602953 Added the new cmo Tool lol
 1786044572593 7 Features for the sfp project would be cool because 7 is a nice number in my opinion!
+1786104841082 How the hell do i register the samfile plugin for vim in neovim :(

@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "shadowdara.samfile"
+        "shadowdara.samfile",
+        "xadillax.viml",
+        "ms-vscode.cmake-tools"
     ]
 }

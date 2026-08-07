@@ -43,7 +43,7 @@
         ]
     },
     "repository": {
-        "url": "https://github.com/sahdowdara/samengine",
+        "url": "https://github.com/shadowdara/sfp",
         "directory": "extensions/samfile-vscode"
     }
 }
