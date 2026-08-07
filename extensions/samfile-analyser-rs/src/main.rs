@@ -84,7 +84,11 @@ impl LanguageServer for Backend {
                     SemanticTokensServerCapabilities::SemanticTokensOptions(
                         SemanticTokensOptions {
                             legend: SemanticTokensLegend {
-                                token_types: vec![SemanticTokenType::MACRO],
+                                // token types
+                                token_types: vec![
+                                    SemanticTokenType::MACRO,
+                                    SemanticTokenType::COMMENT,
+                                ],
                                 token_modifiers: vec![],
                             },
 
@@ -118,7 +122,40 @@ impl LanguageServer for Backend {
         let mut tokens = Vec::new();
 
         for (line_idx, line) in doc.text.lines().enumerate() {
-            if line.trim().starts_with("#define") {
+            let trimmed = line.trim_start();
+
+            // # Kommentar
+            if trimmed.starts_with('#') && !trimmed.starts_with("#define") {
+                let start = line.find('#').unwrap();
+
+                tokens.push(SemanticToken {
+                    delta_line: line_idx as u32,
+                    delta_start: start as u32,
+                    length: line.len() as u32,
+                    token_type: 1,
+                    token_modifiers_bitset: 0,
+                });
+
+                continue;
+            }
+
+            // // Kommentar
+            if trimmed.starts_with("//") {
+                let start = line.find("//").unwrap();
+
+                tokens.push(SemanticToken {
+                    delta_line: line_idx as u32,
+                    delta_start: start as u32,
+                    length: line.len() as u32,
+                    token_type: 1,
+                    token_modifiers_bitset: 0,
+                });
+
+                continue;
+            }
+
+            // #define Macro
+            if trimmed.starts_with("#define") {
                 let parts: Vec<&str> = line.split_whitespace().collect();
 
                 if parts.len() >= 2 {
