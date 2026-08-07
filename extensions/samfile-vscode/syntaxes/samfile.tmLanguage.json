@@ -73,7 +73,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.samfile",
-                    "match": "\\b(RUN|SHELL|SHELLWIN|RM|MV|CP|ECHO|echo|PROMPT|CD|MKDIR|RMDIR)\\b"
+                    "match": "\\b(RUNWIN|TASK|TOUCHMAC|ERRORWIN|MVMAC|RUNLIN|TOUCH|RMLIN|TOUCHWIN|CPMAC|SHELLLIN|ERROR|ECHOWIN|ECHOLIN|WRITEMAC|MV|WARNMAC|ENVMAC|WRITEWIN|SHELLMAC|CP|MKDIRLIN|TASKLIN|WRITELIN|PROMPTLIN|APPENDMAC|APPENDWIN|SHELLWIN|UNSETENV|WARN|SLEEPWIN|ECHO|MVLIN|ERRORLIN|ERRORMAC|RUNMAC|CDLIN|RM|ENVLIN|CDMAC|CPLIN|UNSETENVMAC|WARNLIN|APPEND|ENVWIN|UNSETENVLIN|CPWIN|MVWIN|CDWIN|RUN|SLEEPMAC|CD|PROMPT|UNSETENVWIN|WARNWIN|APPENDLIN|PROMPTWIN|PROMPTMAC|ENV|MKDIRWIN|MKDIR|RMMAC|ECHOMAC|SLEEP|RMWIN|SLEEPLIN|TOUCHLIN|WRITE|TASKWIN|TASKMAC|SHELL|MKDIRMAC)\\b"
                 }
             ]
         },
@@ -83,6 +83,11 @@
                     "name": "string.quoted.double.samfile",
                     "begin": "\"",
                     "end": "\""
+                },
+                {
+                    "name": "string.quoted.single.samfile",
+                    "begin": "'",
+                    "end": "'"
                 },
                 {
                     "name": "string.unquoted.filename.samfile",

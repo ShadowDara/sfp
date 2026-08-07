@@ -2,7 +2,7 @@
     "name": "samfile",
     "displayName": "Samfile Sytax",
     "description": "Syntax Highlighting for Samfiles",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "shadowdara",
     "icon": "icons/samfile.png",
     "engines": {
