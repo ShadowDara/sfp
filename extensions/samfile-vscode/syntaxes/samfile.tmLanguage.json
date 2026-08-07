@@ -1,0 +1,102 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Samfile",
+    "scopeName": "source.samfile",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#targets"
+        },
+        {
+            "include": "#commands"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#urls"
+        },
+        {
+            "include": "#macros"
+        }
+    ],
+    "repository": {
+        "macros": {
+            "patterns": [
+                {
+                    "name": "meta.preprocessor.define.samfile",
+                    "match": "^\\s*#define\\s+[A-Za-z_][A-Za-z0-9_]*\\s+.*$"
+                },
+                {
+                    "name": "entity.name.constant.macro.definition.samfile",
+                    "match": "^\\s*#define\\s+([A-Za-z_][A-Za-z0-9_]*)",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.constant.macro.samfile"
+                        }
+                    }
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.samfile",
+                    "match": "//.*$"
+                },
+                {
+                    "name": "comment.line.number-sign.samfile",
+                    "match": "--.*$"
+                },
+                {
+                    "name": "comment.line.number-sign.samfile",
+                    "match": "^\\s*#(?!define).*$"
+                },
+                {
+                    "name": "comment.block.samfile",
+                    "begin": "/\\*",
+                    "end": "\\*/"
+                }
+            ]
+        },
+        "targets": {
+            "patterns": [
+                {
+                    "name": "entity.name.function.samfile",
+                    "match": "^[A-Za-z0-9_-]+(?=:)"
+                }
+            ]
+        },
+        "commands": {
+            "patterns": [
+                {
+                    "name": "keyword.control.samfile",
+                    "match": "\\b(RUN|SHELL|SHELLWIN|RM|MV|CP|ECHO|echo|PROMPT|CD|MKDIR|RMDIR)\\b"
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.samfile",
+                    "begin": "\"",
+                    "end": "\""
+                },
+                {
+                    "name": "string.unquoted.filename.samfile",
+                    "match": "\\b[\\w./-]+\\.(html|cpp|c|hpp|h|js|ts|json|wasm|data|png|jpg|txt|bat|exe)\\b"
+                }
+            ]
+        },
+        "urls": {
+            "patterns": [
+                {
+                    "name": "markup.underline.link.samfile",
+                    "match": "https?://[^\\s]+"
+                }
+            ]
+        }
+    }
+}

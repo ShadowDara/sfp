@@ -1,0 +1,47 @@
+{
+    "name": "samfile",
+    "displayName": "Samfile Sytax",
+    "description": "Syntax Highlighting for Samfiles",
+    "version": "0.0.5",
+    "publisher": "shadowdara",
+    "icon": "icons/samfile.png",
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "samfile",
+                "aliases": [
+                    "Samfile"
+                ],
+                "extensions": [],
+                "filenames": [
+                    "Samfile"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "samfile",
+                "scopeName": "source.samfile",
+                "path": "./syntaxes/samfile.tmLanguage.json"
+            }
+        ],
+         "iconThemes": [
+            {
+                "id": "samfile-icons",
+                "label": "Samfile Icons",
+                "path": "./fileicons/samfile-icon-theme.json"
+            }
+        ]
+    },
+    "repository": {
+        "url": "https://github.com/sahdowdara/samengine",
+        "directory": "extensions/samfile-vscode"
+    }
+}

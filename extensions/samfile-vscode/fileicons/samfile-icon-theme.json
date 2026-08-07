@@ -1,0 +1,13 @@
+{
+  "iconDefinitions": {
+    "samfile": {
+      "iconPath": "./samfile-icon.svg"
+    }
+  },
+  "fileNames": {
+    "Samfile": "samfile"
+  },
+  "languageIds": {
+    "samfile": "samfile"
+  }
+}
