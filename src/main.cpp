@@ -1,10 +1,11 @@
 // Entry Point for the SAMFILE Parser
 
 #include "flingrunner.hpp"
-#include "sections.hpp"
 #include "settings.hpp"
 #include "test.hpp"
 #include "version.hpp"
+
+#include <sfplib/sections.hpp>
 #include <batch2.hpp>
 #include <cassert>
 #include <iostream>

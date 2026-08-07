@@ -30,9 +30,10 @@ g:
 # Generate Noticehhhhhh
 gen:
     MKDIR release
-    RUN ./build/sfp -pm NOTICE.iml NOTICE.md
-    RUN npm i
-    RUN npx sam-cli markdown NOTICE.md
+    RUNLIN ./build/sfp -pm NOTICE.iml NOTICE.md
+    RUNWIN sfp -pm NOTICE.iml NOTICE.md
+    SHELL npm i
+    SHELL npx sam-cli markdown NOTICE.md
     MV NOTICE.md.html release/sfp-notice.html
     MV NOTICE.md release/sfp-notice.md
 

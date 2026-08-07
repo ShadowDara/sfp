@@ -338,10 +338,6 @@ async fn main() {
     // Never stdout benutzen bei LSP
     eprintln!("Samfile LSP starting ...");
 
-    let text = bridge::ffi::hello_cpp();
-
-    eprintln!("{}", text);
-
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 

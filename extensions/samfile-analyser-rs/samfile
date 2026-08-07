@@ -2,8 +2,12 @@ build:
     RUN vsce package
 
 update:
-    CP ../../thirdparty cpp/thirdparty
-    CP ../../libs cpp/libs
+    CP ../../thirdparty cpp
+    CP ../../libs cpp
+    RUN cargo clean
 
 lb:
     RUN cargo watch -x build
+
+lbu: update
+    RUN cargo b

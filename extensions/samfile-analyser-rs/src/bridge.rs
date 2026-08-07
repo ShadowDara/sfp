@@ -1,9 +1,17 @@
+use std::pin::Pin;
+
 // C++ Bridge
 #[cxx::bridge]
 pub mod ffi {
+
     unsafe extern "C++" {
         include!("mylib.hpp");
 
-        fn hello_cpp() -> String;
+        type RustMap;
+
+        fn insert(self: Pin<&mut RustMap>, key: &str, value: String);
+        fn get(self: &RustMap, key: &str) -> String;
+
+        fn get_sections(value: String) -> UniquePtr<RustMap>;
     }
 }

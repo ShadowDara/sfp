@@ -52,11 +52,13 @@ add_dependencies(
     generate_version_header
 )
 
-add_subdirectory(libs/sfp)
 add_subdirectory(thirdparty/fling)
-add_subdirectory(libs/macroparser)
 add_subdirectory(thirdparty/kvp)
+
+add_subdirectory(libs/sfp)
+add_subdirectory(libs/macroparser)
 add_subdirectory(libs/batch2)
+add_subdirectory(libs/sfp_lib)
 
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
     samfileparserlib
@@ -64,4 +66,5 @@ target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
     macroparserlib
     batch2lib
     kvp
+    sfp_lib
 )

@@ -4,6 +4,14 @@ project(mylib)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
 
+add_subdirectory(thirdparty/fling)
+add_subdirectory(thirdparty/kvp)
+
+add_subdirectory(libs/sfp)
+add_subdirectory(libs/macroparser)
+add_subdirectory(libs/batch2)
+add_subdirectory(libs/sfp_lib)
+
 add_library(mylib STATIC
     src/mylib.cpp
 )
@@ -11,6 +19,15 @@ add_library(mylib STATIC
 target_include_directories(mylib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CXXBRIDGE_INCLUDE}
+)
+
+target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
+    samfileparserlib
+    fling
+    macroparserlib
+    batch2lib
+    kvp
+    sfp_lib
 )
 
 install(
