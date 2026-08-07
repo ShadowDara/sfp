@@ -4,7 +4,7 @@ const lc = require("vscode-languageclient/node");
 
 function activate(context) {
     const serverExe = context.asAbsolutePath(
-        path.join("target", "release", "samfile-lsp")
+        path.join("target", "debug", "samfile-lsp")
     );
 
     const serverOptions = {

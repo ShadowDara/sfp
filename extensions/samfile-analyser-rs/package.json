@@ -17,6 +17,14 @@
                     "Samfile"
                 ]
             }
-        ]
+        ],
+        "configuration": {
+            "title": "Samfile",
+            "properties": {
+                "editor.semanticTokenColorCustomizations": {
+                    "type": "object"
+                }
+            }
+        }
     }
 }

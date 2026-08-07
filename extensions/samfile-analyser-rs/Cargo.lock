@@ -83,6 +83,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "fluaterm"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d74df872c5f7d77dc4011b05ea54dd61ac4c6c3663e39d06f1a514eccb09e827"
+
+[[package]]
 name = "form_urlencoded"
 version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -440,6 +446,7 @@ dependencies = [
 name = "samfile-lsp"
 version = "0.1.0"
 dependencies = [
+ "fluaterm",
  "tokio",
  "tower-lsp",
 ]

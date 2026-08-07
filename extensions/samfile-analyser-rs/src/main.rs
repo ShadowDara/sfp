@@ -80,15 +80,72 @@ impl LanguageServer for Backend {
                     TextDocumentSyncKind::FULL,
                 )),
                 hover_provider: Some(HoverProviderCapability::Simple(true)),
+                semantic_tokens_provider: Some(
+                    SemanticTokensServerCapabilities::SemanticTokensOptions(
+                        SemanticTokensOptions {
+                            legend: SemanticTokensLegend {
+                                token_types: vec![SemanticTokenType::MACRO],
+                                token_modifiers: vec![],
+                            },
+
+                            full: Some(SemanticTokensFullOptions::Bool(true)),
+
+                            range: None,
+                            work_done_progress_options: Default::default(),
+                        },
+                    ),
+                ),
+
                 ..Default::default()
             },
             ..Default::default()
         })
     }
 
+    async fn semantic_tokens_full(
+        &self,
+        params: SemanticTokensParams,
+    ) -> Result<Option<SemanticTokensResult>> {
+        let docs = self.documents.read().await;
+
+        let uri = params.text_document.uri.to_string();
+
+        let doc = match docs.get(&uri) {
+            Some(doc) => doc,
+            None => return Ok(None),
+        };
+
+        let mut tokens = Vec::new();
+
+        for (line_idx, line) in doc.text.lines().enumerate() {
+            if line.trim().starts_with("#define") {
+                let parts: Vec<&str> = line.split_whitespace().collect();
+
+                if parts.len() >= 2 {
+                    let name = parts[1];
+
+                    let start = line.find(name).unwrap();
+
+                    tokens.push(SemanticToken {
+                        delta_line: line_idx as u32,
+                        delta_start: start as u32,
+                        length: name.len() as u32,
+                        token_type: 0,
+                        token_modifiers_bitset: 0,
+                    });
+                }
+            }
+        }
+
+        Ok(Some(SemanticTokensResult::Tokens(SemanticTokens {
+            result_id: None,
+            data: tokens,
+        })))
+    }
+
     async fn initialized(&self, _: InitializedParams) {
         self.client
-            .log_message(MessageType::INFO, "Sam LSP started")
+            .log_message(MessageType::INFO, "Samfile LSP started")
             .await;
     }
 
@@ -144,10 +201,7 @@ impl LanguageServer for Backend {
             return Ok(Some(Hover {
                 contents: HoverContents::Markup(MarkupContent {
                     kind: MarkupKind::Markdown,
-                    value: format!(
-                        "### Macro\n\n```text\n{} -> {}\n```",
-                        word, value
-                    ),
+                    value: format!("### Macro: {}\n\n```text\n{} -> {}\n```", word, word, value),
                 }),
                 range: None,
             }));
@@ -167,7 +221,5 @@ async fn main() {
         documents: Arc::new(RwLock::new(HashMap::new())),
     });
 
-    Server::new(stdin, stdout, socket)
-        .serve(service)
-        .await;
+    Server::new(stdin, stdout, socket).serve(service).await;
 }
