@@ -20,6 +20,12 @@ rust::String RustMap::get(rust::Str key) const
     return it->second;
 }
 
+bool RustMap::rm(rust::Str key)
+{
+    std::string k(key.data(), key.size());
+    return map.erase(k) > 0;
+}
+
 // Function to get the sections
 std::unique_ptr<RustMap> get_sections(rust::String value)
 {

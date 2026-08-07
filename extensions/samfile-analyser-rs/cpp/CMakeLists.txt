@@ -27,7 +27,7 @@ target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE
     macroparserlib
     batch2lib
     kvp
-    sfp_lib
+    sfplib
 )
 
 install(

@@ -17,6 +17,8 @@ class RustMap
 
     void insert(rust::Str key, rust::String value);
 
+    bool rm(rust::Str key);
+
     rust::String get(rust::Str key) const;
 };
 

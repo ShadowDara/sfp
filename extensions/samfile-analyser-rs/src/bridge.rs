@@ -10,6 +10,7 @@ pub mod ffi {
         type RustMap;
 
         fn insert(self: Pin<&mut RustMap>, key: &str, value: String);
+        fn rm(self: Pin<&mut RustMap>, key: &str) -> bool;
         fn get(self: &RustMap, key: &str) -> String;
 
         fn get_sections(value: String) -> UniquePtr<RustMap>;
