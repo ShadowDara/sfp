@@ -14,6 +14,8 @@
 - published version 0.0.7 of the syntax extension for VSCode
 - added vim extension for samfiles
 - added analyser extension for VSCode
+- added C++ Bridge for the samfile analyser
+- added release build workflow for the samfile analyser
 
 
 ## Version 0.3.3 02.08.2026

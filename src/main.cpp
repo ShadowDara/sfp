@@ -74,11 +74,14 @@ int runner(MAP sections, int argc, char *argv[])
     // Load the settings
     KVPMAP seting;
     seting = KeyValueParser2::parse_kvp2(sections["SETTINGS"]);
+    //O(sections["SETTINGS"])
+    //O(sections["FLING"])
 
     // Check what the settings say before running something
     std::string entry = seting.get("ENTRYPOINT").value_or("BATCH2");
     if (entry == "SAMFILE")
     {
+        //P(Samfile)
         auto task = seting.get("ENTRYTASK").value_or("");
         if (task == "")
         {
@@ -91,15 +94,19 @@ int runner(MAP sections, int argc, char *argv[])
 
     if (entry == "FLING")
     {
+        //P(FLING)
         runFling(sections["FLING"]);
     }
 
     if (argc < 2 && entry == "BATCH2")
     {
+        //P(BATCH2)
         auto tokens = batch2::tokenize(sections["BATCH2"]);
         batch2::Interpreter2 interp;
         return interp.execute(tokens);
     }
+
+    //O(entry)
 
     return 1;
 }
@@ -225,6 +232,9 @@ int main(int argc, char *argv[])
     // std::string content = buildin_samfile_content + "\n\n" + loadsamfile();
     std::string content = loadsamfile(filename);
 
+    // parse the content
+    content = parser.parse_macros(content);
+
     // Version of the samfile
     int version = 0;
 
@@ -233,8 +243,11 @@ int main(int argc, char *argv[])
     if (parser.contains_macro("VERSION"))
     {
         auto macro = parser.get_macro("VERSION");
+        //std::cout << macro.body << "\n";
         version = std::stoi(macro.body);
     }
+
+    //std::cout << "Version: " << version << "\n";
 
     // Parse Sections
     //

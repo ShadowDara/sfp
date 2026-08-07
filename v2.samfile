@@ -17,3 +17,13 @@
 %%section BATCH2
 
 %%endsection
+
+
+%%section FLING
+print("Hallo")
+%%endsection
+
+
+%%section SETTINGS
+ENTRYPOINT=FLING
+%%endsection

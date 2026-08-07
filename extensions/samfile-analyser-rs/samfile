@@ -1,2 +1,9 @@
 build:
     RUN vsce package
+
+update:
+    CP ../../thirdparty cpp/thirdparty
+    CP ../../libs cpp/libs
+
+lb:
+    RUN cargo watch -x build

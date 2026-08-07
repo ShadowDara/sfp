@@ -15,5 +15,6 @@
 #include "LICENSE"
 ```
 
+#inlude ".samengine/links.md"
 
 #include "changelog.md"

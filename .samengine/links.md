@@ -1,0 +1,124 @@
+# Links for SFP
+
+Used for SFP:
+
+- **Fling** ([https://github.com/shadowdara/fling](https://github.com/shadowdara/fling)) - a little language made in C++ - by **Shadowdara** licensed unter */* ([/](/)) - *(changes were made)* - *(saved at date: 2026-08-07T12:21:30+02:00)*
+- **KeyValueParser** ([https://github.com/shadowdara/KeyValueParser](https://github.com/shadowdara/KeyValueParser)) -  - by **Shadowdara** licensed unter */* ([/](/)) - *(changes were made)* - *(saved at date: 2026-08-07T21:04:49+02:00)*
+- used **anstyle** version 1.0.14 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/anstyle)*
+- used **async-trait** version 0.1.91 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/async-trait)*
+- used **auto_impl** version 1.3.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/auto_impl)*
+- used **bitflags** version 1.3.2 licensed under **MIT/Apache-2.0** - *[Link](https://crates.io/crates/bitflags)*
+- used **bitflags** version 2.13.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/bitflags)*
+- used **bytes** version 1.12.1 licensed under **MIT** - *[Link](https://crates.io/crates/bytes)*
+- used **cc** version 1.4.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cc)*
+- used **cfg-if** version 1.0.4 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cfg-if)*
+- used **clap** version 4.6.6 licensed under **UNKNOWN** - *[Link](https://crates.io/crates/clap)*
+- used **clap_builder** version 4.6.6 licensed under **UNKNOWN** - *[Link](https://crates.io/crates/clap_builder)*
+- used **clap_lex** version 1.1.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/clap_lex)*
+- used **cmake** version 0.1.58 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cmake)*
+- used **codespan-reporting** version 0.13.1 licensed under **Apache-2.0** - *[Link](https://crates.io/crates/codespan-reporting)*
+- used **cxx** version 1.0.198 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cxx)*
+- used **cxx-build** version 1.0.198 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cxx-build)*
+- used **cxxbridge-cmd** version 1.0.198 licensed under **UNKNOWN** - *[Link](https://crates.io/crates/cxxbridge-cmd)*
+- used **cxxbridge-flags** version 1.0.198 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cxxbridge-flags)*
+- used **cxxbridge-macro** version 1.0.198 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/cxxbridge-macro)*
+- used **dashmap** version 5.5.3 licensed under **MIT** - *[Link](https://crates.io/crates/dashmap)*
+- used **displaydoc** version 0.2.7 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/displaydoc)*
+- used **equivalent** version 1.0.2 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/equivalent)*
+- used **errno** version 0.3.14 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/errno)*
+- used **find-msvc-tools** version 0.1.10 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/find-msvc-tools)*
+- used **fluaterm** version 0.2.3 licensed under **Apache-2.0** - *[Link](https://crates.io/crates/fluaterm)*
+- used **foldhash** version 0.2.0 licensed under **Zlib** - *[Link](https://crates.io/crates/foldhash)*
+- used **form_urlencoded** version 1.2.2 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/form_urlencoded)*
+- used **futures** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures)*
+- used **futures-channel** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-channel)*
+- used **futures-core** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-core)*
+- used **futures-io** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-io)*
+- used **futures-macro** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-macro)*
+- used **futures-sink** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-sink)*
+- used **futures-task** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-task)*
+- used **futures-util** version 0.3.33 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/futures-util)*
+- used **hashbrown** version 0.14.5 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/hashbrown)*
+- used **hashbrown** version 0.17.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/hashbrown)*
+- used **httparse** version 1.10.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/httparse)*
+- used **icu_collections** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_collections)*
+- used **icu_locale_core** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_locale_core)*
+- used **icu_normalizer** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_normalizer)*
+- used **icu_normalizer_data** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_normalizer_data)*
+- used **icu_properties** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_properties)*
+- used **icu_properties_data** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_properties_data)*
+- used **icu_provider** version 2.2.0 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/icu_provider)*
+- used **idna** version 1.1.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/idna)*
+- used **idna_adapter** version 1.2.2 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/idna_adapter)*
+- used **indexmap** version 2.14.0 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/indexmap)*
+- used **itoa** version 1.0.18 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/itoa)*
+- used **libc** version 0.2.189 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/libc)*
+- used **link-cplusplus** version 1.0.12 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/link-cplusplus)*
+- used **litemap** version 0.8.2 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/litemap)*
+- used **lock_api** version 0.4.14 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/lock_api)*
+- used **lsp-types** version 0.94.1 licensed under **MIT** - *[Link](https://crates.io/crates/lsp-types)*
+- used **memchr** version 2.8.3 licensed under **Unlicense OR MIT** - *[Link](https://crates.io/crates/memchr)*
+- used **mio** version 1.2.2 licensed under **MIT** - *[Link](https://crates.io/crates/mio)*
+- used **once_cell** version 1.21.4 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/once_cell)*
+- used **parking_lot** version 0.12.5 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/parking_lot)*
+- used **parking_lot_core** version 0.9.12 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/parking_lot_core)*
+- used **percent-encoding** version 2.3.2 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/percent-encoding)*
+- used **pin-project** version 1.1.13 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/pin-project)*
+- used **pin-project-internal** version 1.1.13 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/pin-project-internal)*
+- used **pin-project-lite** version 0.2.17 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/pin-project-lite)*
+- used **potential_utf** version 0.1.5 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/potential_utf)*
+- used **proc-macro2** version 1.0.107 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/proc-macro2)*
+- used **quote** version 1.0.47 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/quote)*
+- used **redox_syscall** version 0.5.18 licensed under **MIT** - *[Link](https://crates.io/crates/redox_syscall)*
+- used **samfile-lsp** version 0.1.0 licensed under **UNKNOWN** - *[Link](https://crates.io/crates/samfile-lsp)*
+- used **scopeguard** version 1.2.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/scopeguard)*
+- used **scratch** version 1.0.9 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/scratch)*
+- used **serde** version 1.0.229 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/serde)*
+- used **serde_core** version 1.0.229 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/serde_core)*
+- used **serde_derive** version 1.0.229 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/serde_derive)*
+- used **serde_json** version 1.0.151 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/serde_json)*
+- used **serde_repr** version 0.1.21 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/serde_repr)*
+- used **shlex** version 2.0.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/shlex)*
+- used **signal-hook-registry** version 1.4.8 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/signal-hook-registry)*
+- used **slab** version 0.4.12 licensed under **MIT** - *[Link](https://crates.io/crates/slab)*
+- used **smallvec** version 1.15.2 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/smallvec)*
+- used **socket2** version 0.6.5 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/socket2)*
+- used **stable_deref_trait** version 1.2.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/stable_deref_trait)*
+- used **strsim** version 0.11.1 licensed under **MIT** - *[Link](https://crates.io/crates/strsim)*
+- used **syn** version 2.0.119 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/syn)*
+- used **syn** version 3.0.3 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/syn)*
+- used **synstructure** version 0.13.2 licensed under **MIT** - *[Link](https://crates.io/crates/synstructure)*
+- used **termcolor** version 1.4.1 licensed under **Unlicense OR MIT** - *[Link](https://crates.io/crates/termcolor)*
+- used **tinystr** version 0.8.3 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/tinystr)*
+- used **tokio** version 1.53.1 licensed under **MIT** - *[Link](https://crates.io/crates/tokio)*
+- used **tokio-macros** version 2.7.2 licensed under **MIT** - *[Link](https://crates.io/crates/tokio-macros)*
+- used **tokio-util** version 0.7.19 licensed under **MIT** - *[Link](https://crates.io/crates/tokio-util)*
+- used **tower** version 0.4.13 licensed under **MIT** - *[Link](https://crates.io/crates/tower)*
+- used **tower-layer** version 0.3.3 licensed under **MIT** - *[Link](https://crates.io/crates/tower-layer)*
+- used **tower-lsp** version 0.20.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/tower-lsp)*
+- used **tower-lsp-macros** version 0.9.0 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/tower-lsp-macros)*
+- used **tower-service** version 0.3.3 licensed under **MIT** - *[Link](https://crates.io/crates/tower-service)*
+- used **tracing** version 0.1.44 licensed under **MIT** - *[Link](https://crates.io/crates/tracing)*
+- used **tracing-attributes** version 0.1.31 licensed under **MIT** - *[Link](https://crates.io/crates/tracing-attributes)*
+- used **tracing-core** version 0.1.36 licensed under **MIT** - *[Link](https://crates.io/crates/tracing-core)*
+- used **unicode-ident** version 1.0.24 licensed under **(MIT OR Apache-2.0) AND Unicode-3.0** - *[Link](https://crates.io/crates/unicode-ident)*
+- used **unicode-width** version 0.2.2 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/unicode-width)*
+- used **url** version 2.5.8 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/url)*
+- used **utf8_iter** version 1.0.4 licensed under **Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/utf8_iter)*
+- used **wasi** version 0.11.1+wasi-snapshot-preview1 licensed under **Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT** - *[Link](https://crates.io/crates/wasi)*
+- used **winapi-util** version 0.1.11 licensed under **Unlicense OR MIT** - *[Link](https://crates.io/crates/winapi-util)*
+- used **windows-link** version 0.2.1 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/windows-link)*
+- used **windows-sys** version 0.61.2 licensed under **MIT OR Apache-2.0** - *[Link](https://crates.io/crates/windows-sys)*
+- used **writeable** version 0.6.3 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/writeable)*
+- used **yoke** version 0.8.3 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/yoke)*
+- used **yoke-derive** version 0.8.2 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/yoke-derive)*
+- used **zerofrom** version 0.1.8 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/zerofrom)*
+- used **zerofrom-derive** version 0.1.7 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/zerofrom-derive)*
+- used **zerotrie** version 0.2.4 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/zerotrie)*
+- used **zerovec** version 0.11.6 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/zerovec)*
+- used **zerovec-derive** version 0.11.3 licensed under **Unicode-3.0** - *[Link](https://crates.io/crates/zerovec-derive)*
+- used **zmij** version 1.0.23 licensed under **MIT** - *[Link](https://crates.io/crates/zmij)*
+
+---
+
+*File generated by linksaver from s2* - [More Infos](https://shadowdara.wordpress.com/2026/06/30/minisite-a-site-in-only-one-html-file/)

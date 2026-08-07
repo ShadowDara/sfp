@@ -16,3 +16,5 @@ extensions/samfile-vscode/*.vsix
 /extensions/samfile-analyzer/dist
 node_modules
 extensions/samfile-analyser-rs/target
+
+*.exe

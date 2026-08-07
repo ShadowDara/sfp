@@ -1,0 +1,26 @@
+print("Search Primes:")
+
+let n = 50;
+let i = 2;
+
+while i < n {
+    let isPrime = true;
+    let j = 2;
+
+    while j < i {
+        let tmp = i % j;
+        if tmp == 0 {
+            isPrime = false
+        }
+
+        j = j + 1
+    }
+
+    if isPrime == true {
+        print(i)
+    }
+
+    i = i + 1
+
+    // print("iter")
+}

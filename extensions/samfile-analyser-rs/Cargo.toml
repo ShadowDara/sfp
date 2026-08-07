@@ -7,12 +7,27 @@ edition = "2024"
 tower-lsp = "0.20"
 tokio = { version = "1", features = ["full"] }
 fluaterm = "0.2.3"
+cxx = "1.0"
 
-# [profile.release]
-# opt-level = 3       # 0 -> no optimizing, 3 -> max speed
-# lto = "fat"         # oder "thin" für schnelleren Build
-# codegen-units = 1   # bessere Optimierung, aber langsamerer Compile
-# panic = "abort"     # spart etwas Platz, leicht schneller
-# strip = true        # entfernt Debug-Symbole (optional)
-# debug = 0
-# incremental = false
+[build-dependencies]
+cmake = "0.1"
+cxx-build = "1.0"
+
+# fast debug
+[profile.dev]
+opt-level = 0
+debug = true
+incremental = true
+codegen-units = 256
+lto = false
+panic = "unwind"
+strip = false
+
+[profile.release]
+opt-level = 3       # 0 -> no optimizing, 3 -> max speed
+lto = "fat"         # oder "thin" für schnelleren Build
+codegen-units = 1   # bessere Optimierung, aber langsamerer Compile
+panic = "abort"     # spart etwas Platz, leicht schneller
+strip = true        # entfernt Debug-Symbole (optional)
+debug = 0
+incremental = false

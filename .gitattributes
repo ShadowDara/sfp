@@ -4,6 +4,9 @@
 samfile linguist-language=Shell
 *.samfile linguist-language=Shell
 
-thirdparty/** linguist-vendored
+/thirdparty/** linguist-vendored
 
 *.vim linguist-language=Vimscript
+
+/extensions/samfile-analyser-rs/cpp/thirdparty/** linguist-vendored
+/extensions/samfile-analyser-rs/cpp/libs/** linguist-vendored

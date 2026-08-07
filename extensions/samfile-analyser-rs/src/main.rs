@@ -6,6 +6,15 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
+mod bridge;
+
+#[derive(Debug, Clone, Copy)]
+pub enum ParserMode {
+    Default,
+    Version2,
+    Unknown,
+}
+
 #[derive(Default)]
 struct DocumentData {
     text: String,
@@ -25,22 +34,40 @@ impl Backend {
         self.client.log_message(MessageType::INFO, msg).await;
     }
 
+    fn detect_parser_mode(text: &str) -> ParserMode {
+        let defines = Self::parse_defines(text);
+
+        match defines.get("VERSION") {
+            None => ParserMode::Default,
+
+            Some(version) => match version.as_str() {
+                "0" => ParserMode::Default,
+                "2" => ParserMode::Version2,
+                _ => ParserMode::Unknown,
+            },
+        }
+    }
+
     fn parse_defines(text: &str) -> HashMap<String, String> {
         let mut defs = HashMap::new();
 
         for line in text.lines() {
             let line = line.trim();
 
-            if let Some(rest) = line.strip_prefix("#define ") {
-                let mut parts = rest.splitn(2, ' ');
+            if let Some(rest) = line.strip_prefix("#define") {
+                let parts: Vec<&str> = rest.split_whitespace().collect();
 
-                if let (Some(name), Some(value)) = (parts.next(), parts.next()) {
-                    defs.insert(name.to_string(), value.trim().to_string());
+                if parts.len() >= 2 {
+                    defs.insert(parts[0].to_string(), parts[1..].join(" "));
                 }
             }
         }
 
         defs
+    }
+
+    fn parse_document(text: &str) -> ParserMode {
+        return Self::detect_parser_mode(text);
     }
 
     fn word_at(text: &str, pos: Position) -> Option<String> {
@@ -133,6 +160,14 @@ impl LanguageServer for Backend {
             Some(doc) => doc,
             None => return Ok(None),
         };
+
+        let mode = Self::parse_document(&doc.text);
+
+        self.log(format!("parser mode: {:?}", mode)).await;
+
+        if !matches!(mode, ParserMode::Default) {
+            return Ok(None);
+        }
 
         let mut tokens = Vec::new();
 
@@ -263,6 +298,14 @@ impl LanguageServer for Backend {
             None => return Ok(None),
         };
 
+        let mode = Self::parse_document(&doc.text);
+
+        self.log(format!("parser mode: {:?}", mode)).await;
+
+        if !matches!(mode, ParserMode::Default) {
+            return Ok(None);
+        }
+
         let pos = params.text_document_position_params.position;
 
         let word = match Self::word_at(&doc.text, pos) {
@@ -294,6 +337,10 @@ impl LanguageServer for Backend {
 async fn main() {
     // Never stdout benutzen bei LSP
     eprintln!("Samfile LSP starting ...");
+
+    let text = bridge::ffi::hello_cpp();
+
+    eprintln!("{}", text);
 
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();

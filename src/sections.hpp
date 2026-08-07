@@ -14,7 +14,7 @@
 
 
 // Function to parse the Data
-std::unordered_map<std::string, std::string> parse_Sections(const std::string &input)
+inline std::unordered_map<std::string, std::string> parse_Sections(const std::string &input)
 {
 	std::unordered_map<std::string, std::string> out;
 

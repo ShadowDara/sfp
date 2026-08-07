@@ -12,7 +12,7 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE) #link time optimization
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE) #link time optimization
 
 # for clang d
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -24,6 +24,8 @@ endif()
 
 
 project(sfp)
+
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 set(VERSION_HEADER ${CMAKE_BINARY_DIR}/src/version.hpp)
 
@@ -40,8 +42,6 @@ add_custom_target(
     generate_version_header
     DEPENDS ${CMAKE_BINARY_DIR}/src/version.hpp
 )
-
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 
 add_executable("${CMAKE_PROJECT_NAME}" "src/main.cpp" "src/flingrunner.cpp" "src/sfp.rc" ${VERSION_HEADER})

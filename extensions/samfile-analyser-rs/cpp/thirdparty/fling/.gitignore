@@ -1,0 +1,10 @@
+/.vs
+/out
+/.vscode
+
+*.pdb
+*.exe
+*.TMP
+build
+
+target/
