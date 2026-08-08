@@ -17,27 +17,27 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            binary: seg
+            binary: samfile-lsp
           
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            binary: seg
+            binary: samfile-lsp
 
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            binary: seg.exe
+            binary: samfile-lsp.exe
           
           - os: windows-latest
             target: aarch64-pc-windows-msvc
-            binary: seg.exe
+            binary: samfile-lsp.exe
 
           - os: macos-latest
             target: x86_64-apple-darwin
-            binary: seg
+            binary: samfile-lsp
 
           - os: macos-latest
             target: aarch64-apple-darwin
-            binary: seg
+            binary: samfile-lsp
 
     steps:
       - uses: actions/checkout@v4
