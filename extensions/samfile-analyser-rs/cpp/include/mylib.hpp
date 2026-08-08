@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include <iostream>
 
 #include <sfplib/sections.hpp>
 
@@ -20,6 +21,11 @@ class RustMap
     bool rm(rust::Str key);
 
     rust::String get(rust::Str key) const;
+
+    size_t len() const;
+
+    // for iterator
+    rust::Vec<rust::String> keys() const;
 };
 
 // Function to get the sections

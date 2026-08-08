@@ -26,6 +26,24 @@ bool RustMap::rm(rust::Str key)
     return map.erase(k) > 0;
 }
 
+size_t RustMap::len() const
+{
+    return map.size();
+}
+
+// for iterator
+rust::Vec<rust::String> RustMap::keys() const
+{
+    rust::Vec<rust::String> result;
+
+    for (const auto& [key, value] : map)
+    {
+        result.push_back(key);
+    }
+
+    return result;
+}
+
 // Function to get the sections
 std::unique_ptr<RustMap> get_sections(rust::String value)
 {

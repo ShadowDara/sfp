@@ -6,6 +6,9 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
+use crate::bridge::ffi::get_sections;
+use crate::bridge::{SectionInfo, parse_v2_sections};
+
 mod bridge;
 
 #[derive(Debug, Clone, Copy)]
@@ -20,6 +23,13 @@ struct DocumentData {
     text: String,
 }
 
+#[derive(Debug, Clone)]
+struct Section {
+    name: String,
+    start_line: usize,
+    end_line: Option<usize>,
+}
+
 struct Backend {
     client: Client,
     documents: Arc<RwLock<HashMap<String, DocumentData>>>,
@@ -29,11 +39,19 @@ impl Backend {
     async fn log(&self, msg: impl Into<String>) {
         let msg = msg.into();
 
-        eprintln!("[SAMFILE LSP] {}", msg);
+        // eprintln!("[SAMFILE LSP] {}", msg);
 
         self.client.log_message(MessageType::INFO, msg).await;
     }
 
+    // Get the current section
+    fn section_at(text: &str, line: usize) -> Option<SectionInfo> {
+        parse_v2_sections(text).into_iter().find(|section| {
+            line >= section.start_line as usize && line <= section.end_line as usize
+        })
+    }
+
+    // Get the Parser Mode
     fn detect_parser_mode(text: &str) -> ParserMode {
         let defines = Self::parse_defines(text);
 
@@ -106,6 +124,7 @@ impl Backend {
 
 #[tower_lsp::async_trait]
 impl LanguageServer for Backend {
+    // Start intialising
     async fn initialize(&self, params: InitializeParams) -> Result<InitializeResult> {
         self.log(format!("INITIALIZE CALLED client={:?}", params.client_info))
             .await;
@@ -237,14 +256,17 @@ impl LanguageServer for Backend {
         })))
     }
 
+    // Start
     async fn initialized(&self, _: InitializedParams) {
         self.log("Samfile LSP started").await;
     }
 
+    // Close
     async fn shutdown(&self) -> Result<()> {
         Ok(())
     }
 
+    // Open FIle
     async fn did_open(&self, params: DidOpenTextDocumentParams) {
         let uri = params.text_document.uri.to_string();
 
@@ -265,6 +287,7 @@ impl LanguageServer for Backend {
         );
     }
 
+    // on change
     async fn did_change(&self, params: DidChangeTextDocumentParams) {
         let uri = params.text_document.uri.to_string();
 
@@ -284,6 +307,7 @@ impl LanguageServer for Backend {
         }
     }
 
+    // hover
     async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
         let docs = self.documents.read().await;
 
@@ -302,34 +326,94 @@ impl LanguageServer for Backend {
 
         self.log(format!("parser mode: {:?}", mode)).await;
 
-        if !matches!(mode, ParserMode::Default) {
-            return Ok(None);
+        match mode {
+            // Version 0 (Default)
+            ParserMode::Default => {
+                let pos = params.text_document_position_params.position;
+
+                let word = match Self::word_at(&doc.text, pos) {
+                    Some(word) => word,
+                    None => return Ok(None),
+                };
+
+                self.log(format!("HOVER word={}", word)).await;
+
+                let defines = Self::parse_defines(&doc.text);
+
+                if let Some(value) = defines.get(&word) {
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!(
+                                "### Macro: {}\n\n```text\n{} -> {}\n```",
+                                word, word, value
+                            ),
+                        }),
+                        range: None,
+                    }));
+                }
+
+                self.log(format!("no define found for {}", word)).await;
+
+                Ok(None)
+            }
+
+            // Version 2
+            ParserMode::Version2 => {
+                let pos = params.text_document_position_params.position;
+
+                let word = match Self::word_at(&doc.text, pos) {
+                    Some(word) => word,
+                    None => return Ok(None),
+                };
+
+                self.log(format!("HOVER word={}", word)).await;
+
+                let defines = Self::parse_defines(&doc.text);
+
+                if let Some(value) = defines.get(&word) {
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!(
+                                "### Macro: {}\n\n```text\n{} -> {}\n```",
+                                word, word, value
+                            ),
+                        }),
+                        range: None,
+                    }));
+                }
+
+                self.log(format!("no define found for {}", word)).await;
+
+                // Sections Hover
+                if let Some(section) = Self::section_at(&doc.text, pos.line as usize) {
+                    self.log(format!("cursor in section {}", section.name))
+                        .await;
+
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!("### Section\n\n{}", section.name),
+                        }),
+                        range: None,
+                    }));
+                } else {
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!("### Section\n\nGlobal"),
+                        }),
+                        range: None,
+                    }));
+                }
+            }
+
+            // Unknown Version
+            ParserMode::Unknown => {
+                return Ok(None);
+            }
         }
-
-        let pos = params.text_document_position_params.position;
-
-        let word = match Self::word_at(&doc.text, pos) {
-            Some(word) => word,
-            None => return Ok(None),
-        };
-
-        self.log(format!("HOVER word={}", word)).await;
-
-        let defines = Self::parse_defines(&doc.text);
-
-        if let Some(value) = defines.get(&word) {
-            return Ok(Some(Hover {
-                contents: HoverContents::Markup(MarkupContent {
-                    kind: MarkupKind::Markdown,
-                    value: format!("### Macro: {}\n\n```text\n{} -> {}\n```", word, word, value),
-                }),
-                range: None,
-            }));
-        }
-
-        self.log(format!("no define found for {}", word)).await;
-
-        Ok(None)
     }
 }
 
