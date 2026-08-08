@@ -14,8 +14,8 @@
             {
                 "id": "samfile",
                 "extensions": [
-                    ".sam",
-                    "Samfile"
+                    ".samfile",
+                    "samfile"
                 ]
             }
         ],
