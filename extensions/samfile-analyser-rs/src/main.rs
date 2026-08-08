@@ -6,10 +6,11 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
-use crate::bridge::ffi::get_sections;
+// use crate::bridge::ffi::get_sections;
 use crate::bridge::{SectionInfo, parse_v2_sections};
 
 mod bridge;
+mod fling_bridge;
 
 #[derive(Debug, Clone, Copy)]
 pub enum ParserMode {
@@ -21,13 +22,6 @@ pub enum ParserMode {
 #[derive(Default)]
 struct DocumentData {
     text: String,
-}
-
-#[derive(Debug, Clone)]
-struct Section {
-    name: String,
-    start_line: usize,
-    end_line: Option<usize>,
 }
 
 struct Backend {
@@ -119,6 +113,30 @@ impl Backend {
         }
 
         Some(chars[start..end].iter().collect())
+    }
+
+    // ---- NEU: Fling-Integration -----------------------------------------
+
+    /// Läuft die fling-lsp Diagnostics-Pipeline für jede `FLING`-Section im
+    /// Dokument und published das Ergebnis (ersetzt evtl. vorherige
+    /// Diagnostics für diese URI komplett).
+    async fn publish_fling_diagnostics(&self, uri: Url, text: &str) {
+        if !matches!(Self::detect_parser_mode(text), ParserMode::Version2) {
+            return;
+        }
+
+        let mut all_diags = Vec::new();
+
+        for section in parse_v2_sections(text)
+            .into_iter()
+            .filter(|s| s.name == "FLING")
+        {
+            // Inhalt beginnt in der Zeile nach "%%section FLING".
+            let line_offset = section.start_line + 1;
+            all_diags.extend(fling_bridge::fling_diagnostics(&section.content, line_offset));
+        }
+
+        self.client.publish_diagnostics(uri, all_diags, None).await;
     }
 }
 
@@ -282,9 +300,14 @@ impl LanguageServer for Backend {
         docs.insert(
             uri,
             DocumentData {
-                text: params.text_document.text,
+                text: params.text_document.text.clone(),
             },
         );
+
+        drop(docs); // Lock freigeben, bevor wir publishen
+
+        self.publish_fling_diagnostics(params.text_document.uri, &params.text_document.text)
+            .await;
     }
 
     // on change
@@ -295,15 +318,25 @@ impl LanguageServer for Backend {
 
         let mut docs = self.documents.write().await;
 
+        let mut new_text: Option<String> = None;
+
         if let Some(doc) = docs.get_mut(&uri) {
             if let Some(change) = params.content_changes.first() {
                 self.log(format!("new document size={} chars", change.text.len()))
                     .await;
 
                 doc.text = change.text.clone();
+                new_text = Some(doc.text.clone());
             }
         } else {
             self.log("CHANGE received for unknown document").await;
+        }
+
+        drop(docs);
+
+        if let Some(text) = new_text {
+            self.publish_fling_diagnostics(params.text_document.uri, &text)
+                .await;
         }
     }
 
@@ -361,6 +394,35 @@ impl LanguageServer for Backend {
             // Version 2
             ParserMode::Version2 => {
                 let pos = params.text_document_position_params.position;
+
+                // NEU: Wenn Cursor in einer FLING-Section liegt, an die
+                // fling-lsp-Analyse delegieren.
+                if let Some(section) = Self::section_at(&doc.text, pos.line as usize) {
+                    if section.name == "FLING" {
+                        let line_offset = section.start_line + 1;
+                        let local_pos = Position {
+                            line: pos.line.saturating_sub(line_offset),
+                            character: pos.character,
+                        };
+
+                        if let Some((range, text)) =
+                            fling_bridge::fling_hover(&section.content, local_pos, line_offset)
+                        {
+                            return Ok(Some(Hover {
+                                contents: HoverContents::Markup(MarkupContent {
+                                    kind: MarkupKind::Markdown,
+                                    value: text,
+                                }),
+                                range: Some(range),
+                            }));
+                        }
+
+                        // In der FLING-Section, aber kein Treffer -> hier
+                        // aufhören statt in den Macro-/"Global"-Fallback zu
+                        // fallen, der für Fling-Code keinen Sinn ergibt.
+                        return Ok(None);
+                    }
+                }
 
                 let word = match Self::word_at(&doc.text, pos) {
                     Some(word) => word,

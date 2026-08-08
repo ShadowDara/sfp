@@ -1,24 +1,24 @@
 use std::pin::Pin;
 
-// C++ Bridge
-#[cxx::bridge]
-pub mod ffi {
+// // C++ Bridge
+// #[cxx::bridge]
+// pub mod ffi {
 
-    unsafe extern "C++" {
-        include!("mylib.hpp");
+//     unsafe extern "C++" {
+//         include!("mylib.hpp");
 
-        type RustMap;
+//         type RustMap;
 
-        fn insert(self: Pin<&mut RustMap>, key: &str, value: String);
-        fn rm(self: Pin<&mut RustMap>, key: &str) -> bool;
-        fn get(self: &RustMap, key: &str) -> String;
-        fn len(self: &RustMap) -> usize;
-        fn keys(self: &RustMap) -> Vec<String>;
+//         fn insert(self: Pin<&mut RustMap>, key: &str, value: String);
+//         fn rm(self: Pin<&mut RustMap>, key: &str) -> bool;
+//         fn get(self: &RustMap, key: &str) -> String;
+//         fn len(self: &RustMap) -> usize;
+//         fn keys(self: &RustMap) -> Vec<String>;
 
-        pub fn get_sections(value: String) -> UniquePtr<RustMap>;
+//         pub fn get_sections(value: String) -> UniquePtr<RustMap>;
 
-    }
-}
+//     }
+// }
 
 #[derive(Debug, Clone)]
 pub struct SectionInfo {
